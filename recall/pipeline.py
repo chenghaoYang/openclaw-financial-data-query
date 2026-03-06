@@ -23,6 +23,7 @@ from .providers.bge_search import BgeSearchClient
 from .utils.domain_router import DomainRouter, RouterOutput
 from .utils.market_taxonomy import (
     expand_market_for_soft_routing,
+    market_filter_values,
     normalize_frequency_tag,
     normalize_market_tag,
 )
@@ -490,6 +491,27 @@ class RecallPipeline:
                 candidate_sources["bm25_new"] = new_bm25
                 logger.info(f"    BM25 recall: {len(bm25_hits)} candidates ({new_bm25} new)")
 
+            # Federated search for multi-intent queries (parallel per-market BM25)
+            federated_results = await self._federated_multi_intent_recall(
+                router_output=router_output,
+                norm_info=norm_info,
+                bm25_query=bm25_query,
+                vector_query=vector_query,
+                retrieval_top_k=retrieval_top_k,
+            )
+            federated_all_hits: List[Dict[str, Any]] = []
+            if federated_results:
+                for fed_label, fed_hits in federated_results.items():
+                    new_fed = 0
+                    for hit in fed_hits:
+                        doc_id = hit.get("id", "")
+                        if doc_id and doc_id not in all_candidates:
+                            all_candidates[doc_id] = {**hit, "_source": fed_label}
+                            new_fed += 1
+                    federated_all_hits.extend(fed_hits)
+                    candidate_sources[fed_label] = len(fed_hits)
+                    candidate_sources[f"{fed_label}_new"] = new_fed
+
             # Step 4: Hybrid Fusion（RRF / Linear-CC）
             has_vector_hits = any([global_hits, scoped_hits, two_stage_hits])
             if has_vector_hits and bm25_hits and self.bm25_retriever is not None:
@@ -504,6 +526,11 @@ class RecallPipeline:
                     "two_stage": two_stage_hits or [],
                     "bm25": bm25_hits,
                 }
+                # Include federated per-market hits in fusion (treated as BM25 weight)
+                if federated_results:
+                    for fed_label, fed_hits in federated_results.items():
+                        if fed_hits:
+                            ranked_lists[fed_label] = fed_hits
 
                 if fusion_mode == "linear" and multi_list_linear is not None:
                     weights = {
@@ -549,18 +576,26 @@ class RecallPipeline:
                             True,
                         )
                     )
+                    bm25_higher_is_better = bool(
+                        getattr(
+                            self._hybrid_cfg,
+                            "linear_bm25_score_higher_is_better",
+                            True,
+                        )
+                    )
                     score_higher_is_better = {
                         "global": vector_higher_is_better,
                         "scoped": vector_higher_is_better,
                         "two_stage": vector_higher_is_better,
-                        "bm25": bool(
-                            getattr(
-                                self._hybrid_cfg,
-                                "linear_bm25_score_higher_is_better",
-                                True,
-                            )
-                        ),
+                        "bm25": bm25_higher_is_better,
                     }
+                    # Add federated legs to linear fusion (same weight/score as BM25)
+                    if federated_results:
+                        for fed_label in federated_results:
+                            if fed_label in ranked_lists:
+                                weights[fed_label] = weights["bm25"]
+                                score_fields[fed_label] = "bm25_score"
+                                score_higher_is_better[fed_label] = bm25_higher_is_better
                     use_cc = bool(getattr(self._hybrid_cfg, "linear_use_cc", True))
                     candidates = multi_list_linear(
                         scored_lists=ranked_lists,
@@ -594,6 +629,11 @@ class RecallPipeline:
                             "two_stage": w_vector,
                             "bm25": w_bm25,
                         }
+                        # Add federated legs to RRF fusion (same weight as BM25)
+                        if federated_results:
+                            for fed_label in federated_results:
+                                if fed_label in ranked_lists:
+                                    weights[fed_label] = w_bm25
                         candidates = multi_list_rrf(
                             ranked_lists=ranked_lists,
                             weights=weights,
@@ -639,38 +679,15 @@ class RecallPipeline:
                 already_sorted=from_fusion,
             )
 
-            # Router alignment boost: gently boost candidates from router-aligned paths
-            # Only when router has high confidence and specific paths
-            if (
-                router_output.confidence >= 0.7
-                and router_output.allowed_yaml_paths
-                and router_output.intent != "global"
-            ):
-                _aligned_paths = set(router_output.allowed_yaml_paths)
-                # Also include expanded variants
-                _aligned_paths.update(self._expand_yaml_paths_for_filter(
-                    router_output.allowed_yaml_paths
-                ))
-                _boost_count = 0
-                for c in candidates:
-                    c_path = c.get("yaml_path", "")
-                    is_aligned = c_path in _aligned_paths or any(
-                        c_path.endswith(p.split("/")[-1]) for p in _aligned_paths if "/" in p
-                    )
-                    if is_aligned:
-                        # Apply 1.20x boost to aligned candidates
-                        for score_key in ("rrf_score", "linear_score", "distance"):
-                            if c.get(score_key) is not None:
-                                c[score_key] = c[score_key] * 1.20
-                                break
-                        _boost_count += 1
-                if _boost_count > 0:
-                    logger.debug(
-                        "Router alignment boost (%.2f): %d/%d candidates boosted",
-                        router_output.confidence,
-                        _boost_count,
-                        len(candidates),
-                    )
+            # Soft Boosting: graduated score adjustment based on router alignment.
+            # Instead of hard filtering, apply 3-tier multipliers:
+            #   Tier 1 (aligned): candidate yaml_path in router's allowed_yaml_paths → boost
+            #   Tier 2 (same market): same market as router, but different table → neutral
+            #   Tier 3 (cross market): different market entirely → penalty
+            # This preserves recall for long-tail queries where the router may be wrong.
+            candidates = self._apply_soft_boosting(
+                candidates, router_output, norm_info
+            )
 
             # Step 5: Sort by retrieval score (no LLM reranking)
             logger.info("Step 5: Sorting by retrieval score (agent handles reranking)...")
@@ -1480,6 +1497,190 @@ class RecallPipeline:
             f"{len(candidates)} -> {max_candidates}"
         )
         return truncated
+
+    def _apply_soft_boosting(
+        self,
+        candidates: List[Dict[str, Any]],
+        router_output: RouterOutput,
+        norm_info: Dict[str, Any],
+    ) -> List[Dict[str, Any]]:
+        """Apply graduated score adjustments based on router alignment.
+
+        3-tier multiplier system (Soft Boosting):
+          Tier 1 (aligned):      yaml_path ∈ router allowed_yaml_paths → aligned_boost (default 1.30x)
+          Tier 2 (same market):  same market, different table            → same_market_factor (default 1.0x)
+          Tier 3 (cross market): different market entirely               → cross_market_penalty (default 0.5x)
+
+        This replaces hard filtering with preference signals, ensuring that even if the
+        router misroutes, semantically correct candidates can still surface via their
+        raw retrieval score.
+        """
+        if not candidates:
+            return candidates
+
+        # Check activation conditions
+        router_cfg = self._router_cfg
+        min_confidence = float(getattr(router_cfg, "boost_min_confidence", 0.4))
+        if router_output.confidence < min_confidence:
+            return candidates
+        if router_output.intent == "global" and not router_output.allowed_yaml_paths:
+            return candidates
+
+        aligned_boost = float(getattr(router_cfg, "aligned_boost", 1.30))
+        same_market_factor = float(getattr(router_cfg, "same_market_factor", 1.0))
+        cross_market_penalty = float(getattr(router_cfg, "cross_market_penalty", 0.5))
+
+        # Interpolate factors toward 1.0 as confidence drops toward min_confidence.
+        # At confidence == 1.0: full factor. At confidence == min_confidence: factor → 1.0.
+        conf_range = 1.0 - min_confidence
+        if conf_range > 0:
+            t = (router_output.confidence - min_confidence) / conf_range
+        else:
+            t = 1.0
+        effective_boost = 1.0 + (aligned_boost - 1.0) * t
+        effective_same = 1.0 + (same_market_factor - 1.0) * t
+        effective_penalty = 1.0 + (cross_market_penalty - 1.0) * t
+
+        # Build aligned path set (with expanded variants)
+        _aligned_paths: set = set()
+        if router_output.allowed_yaml_paths:
+            _aligned_paths.update(router_output.allowed_yaml_paths)
+            _aligned_paths.update(
+                self._expand_yaml_paths_for_filter(router_output.allowed_yaml_paths)
+            )
+
+        # Determine router market(s)
+        router_market = normalize_market_tag(
+            norm_info.get("market") or router_output.market
+        )
+
+        counts = {"aligned": 0, "same_market": 0, "cross_market": 0}
+        for c in candidates:
+            c_path = c.get("yaml_path", "")
+            is_aligned = (
+                bool(_aligned_paths)
+                and (
+                    c_path in _aligned_paths
+                    or any(
+                        c_path.endswith(p.split("/")[-1])
+                        for p in _aligned_paths
+                        if "/" in p
+                    )
+                )
+            )
+
+            if is_aligned:
+                factor = effective_boost
+                counts["aligned"] += 1
+            elif not router_market:
+                # No market info → no penalty
+                continue
+            else:
+                c_market = normalize_market_tag(c.get("market"))
+                if not c_market or c_market == router_market:
+                    factor = effective_same
+                    counts["same_market"] += 1
+                else:
+                    factor = effective_penalty
+                    counts["cross_market"] += 1
+
+            if factor == 1.0:
+                continue
+            for score_key in ("rrf_score", "linear_score", "distance"):
+                if c.get(score_key) is not None:
+                    c[score_key] = c[score_key] * factor
+                    break
+
+        if any(v > 0 for v in counts.values()):
+            logger.info(
+                "Soft boosting (confidence=%.2f, t=%.2f): "
+                "aligned=%d (×%.2f), same_market=%d (×%.2f), cross_market=%d (×%.2f)",
+                router_output.confidence,
+                t,
+                counts["aligned"],
+                effective_boost,
+                counts["same_market"],
+                effective_same,
+                counts["cross_market"],
+                effective_penalty,
+            )
+
+        return candidates
+
+    async def _federated_multi_intent_recall(
+        self,
+        router_output: RouterOutput,
+        norm_info: Dict[str, Any],
+        bm25_query: str,
+        vector_query: str,
+        retrieval_top_k: int,
+    ) -> Optional[Dict[str, List[Dict[str, Any]]]]:
+        """Federated search for multi-intent queries: run parallel per-market retrieval.
+
+        When a query involves multiple markets (e.g., "A股和美股科技股涨幅对比"),
+        instead of mixing all markets into a single retrieval pool (where one market's
+        longer descriptions can crowd out the other), we run independent BM25 searches
+        per market and merge the results with guaranteed minimum representation.
+
+        Returns:
+            Dict mapping source label to hit list, or None if federated search is
+            not applicable (single intent, disabled, etc.).
+        """
+        router_cfg = self._router_cfg
+        if not bool(getattr(router_cfg, "enable_federated_search", True)):
+            return None
+        if not router_output.is_multi_intent:
+            return None
+
+        markets = list(router_output.markets) if router_output.markets else []
+        if len(markets) < 2:
+            return None
+
+        if self.bm25_retriever is None:
+            return None
+
+        min_per_leg = int(getattr(router_cfg, "federated_min_per_leg", 3))
+        per_leg_top_k = max(min_per_leg, retrieval_top_k // len(markets))
+
+        logger.info(
+            "Federated search: %d markets %s, per_leg_top_k=%d",
+            len(markets),
+            markets,
+            per_leg_top_k,
+        )
+
+        loop = asyncio.get_running_loop()
+
+        async def _search_market_leg(market: str) -> List[Dict[str, Any]]:
+            market_filter = market_filter_values(market) or {market}
+
+            def _run():
+                return self._bm25_search(
+                    bm25_query,
+                    per_leg_top_k,
+                    market=market_filter,
+                )
+
+            hits = await loop.run_in_executor(None, _run)
+            for hit in hits:
+                hit["_federated_market"] = market
+            return hits
+
+        leg_results = await asyncio.gather(
+            *(_search_market_leg(m) for m in markets)
+        )
+
+        result: Dict[str, List[Dict[str, Any]]] = {}
+        for market, hits in zip(markets, leg_results):
+            label = f"federated_{market}"
+            result[label] = hits
+            logger.info(
+                "  Federated leg %s: %d candidates",
+                market,
+                len(hits),
+            )
+
+        return result
 
     async def _two_stage_retrieval(
         self,
