@@ -1,0 +1,4498 @@
+[
+  {
+    "function": "abs",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Absolute value"
+  },
+  {
+    "function": "abs",
+    "return_type": "decimal(p,s)",
+    "argument_types": "decimal(p,s)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Absolute value"
+  },
+  {
+    "function": "abs",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Absolute value"
+  },
+  {
+    "function": "abs",
+    "return_type": "integer",
+    "argument_types": "integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Absolute value"
+  },
+  {
+    "function": "abs",
+    "return_type": "real",
+    "argument_types": "real",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Absolute value"
+  },
+  {
+    "function": "abs",
+    "return_type": "smallint",
+    "argument_types": "smallint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Absolute value"
+  },
+  {
+    "function": "abs",
+    "return_type": "tinyint",
+    "argument_types": "tinyint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Absolute value"
+  },
+  {
+    "function": "acos",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Arc cosine"
+  },
+  {
+    "function": "all_match",
+    "return_type": "boolean",
+    "argument_types": "array(t), function(t,boolean)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns true if all elements of the array match the given predicate"
+  },
+  {
+    "function": "any_match",
+    "return_type": "boolean",
+    "argument_types": "array(t), function(t,boolean)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns true if the array contains one or more elements that match the given predicate"
+  },
+  {
+    "function": "approx_distinct",
+    "return_type": "bigint",
+    "argument_types": "boolean",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_distinct",
+    "return_type": "bigint",
+    "argument_types": "boolean, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_distinct",
+    "return_type": "bigint",
+    "argument_types": "t",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_distinct",
+    "return_type": "bigint",
+    "argument_types": "t, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_distinct",
+    "return_type": "bigint",
+    "argument_types": "unknown",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_distinct",
+    "return_type": "bigint",
+    "argument_types": "unknown, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_most_frequent",
+    "return_type": "map(bigint,bigint)",
+    "argument_types": "bigint, bigint, bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_most_frequent",
+    "return_type": "map(varchar,bigint)",
+    "argument_types": "bigint, varchar, bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "array(bigint)",
+    "argument_types": "bigint, array(double)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "array(bigint)",
+    "argument_types": "bigint, double, array(double)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "array(double)",
+    "argument_types": "double, array(double)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "array(double)",
+    "argument_types": "double, double, array(double)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "array(real)",
+    "argument_types": "real, array(double)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "array(real)",
+    "argument_types": "real, double, array(double)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "bigint",
+    "argument_types": "bigint, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "bigint",
+    "argument_types": "bigint, double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "bigint",
+    "argument_types": "bigint, double, double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "double",
+    "argument_types": "double, double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "double",
+    "argument_types": "double, double, double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "real",
+    "argument_types": "real, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "real",
+    "argument_types": "real, double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "approx_percentile",
+    "return_type": "real",
+    "argument_types": "real, double, double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "arbitrary",
+    "return_type": "t",
+    "argument_types": "t",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Return an arbitrary non-null input value"
+  },
+  {
+    "function": "array_agg",
+    "return_type": "array(t)",
+    "argument_types": "t",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "return an array of values"
+  },
+  {
+    "function": "array_distinct",
+    "return_type": "array(e)",
+    "argument_types": "array(e)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remove duplicate values from the given array"
+  },
+  {
+    "function": "array_except",
+    "return_type": "array(e)",
+    "argument_types": "array(e), array(e)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns an array of elements that are in the first array but not the second, without duplicates."
+  },
+  {
+    "function": "array_intersect",
+    "return_type": "array(e)",
+    "argument_types": "array(e), array(e)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Intersects elements of the two given arrays"
+  },
+  {
+    "function": "array_join",
+    "return_type": "varchar",
+    "argument_types": "array(T), varchar",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Concatenates the elements of the given array using a delimiter and an optional string to replace nulls"
+  },
+  {
+    "function": "array_join",
+    "return_type": "varchar",
+    "argument_types": "array(T), varchar, varchar",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Concatenates the elements of the given array using a delimiter and an optional string to replace nulls"
+  },
+  {
+    "function": "array_max",
+    "return_type": "t",
+    "argument_types": "array(t)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Get maximum value of array"
+  },
+  {
+    "function": "array_median",
+    "return_type": "double",
+    "argument_types": "array(t)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Function that calculates the median of arrays"
+  },
+  {
+    "function": "array_min",
+    "return_type": "t",
+    "argument_types": "array(t)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Get minimum value of array"
+  },
+  {
+    "function": "array_position",
+    "return_type": "bigint",
+    "argument_types": "array(t), t",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns the position of the first occurrence of the given value in array (or 0 if not found)"
+  },
+  {
+    "function": "array_remove",
+    "return_type": "array(e)",
+    "argument_types": "array(e), e",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remove specified values from the given array"
+  },
+  {
+    "function": "array_sort",
+    "return_type": "array(e)",
+    "argument_types": "array(e)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Sorts the given array in ascending order according to the natural ordering of its elements."
+  },
+  {
+    "function": "array_sort",
+    "return_type": "array(t)",
+    "argument_types": "array(t), function(t,t,integer)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Sorts the given array with a lambda comparator."
+  },
+  {
+    "function": "array_union",
+    "return_type": "array(e)",
+    "argument_types": "array(e), array(e)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Union elements of the two given arrays"
+  },
+  {
+    "function": "arrays_overlap",
+    "return_type": "boolean",
+    "argument_types": "array(e), array(e)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns true if arrays have common elements"
+  },
+  {
+    "function": "asin",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Arc sine"
+  },
+  {
+    "function": "at_timezone",
+    "return_type": "timestamp(p) with time zone",
+    "argument_types": "timestamp(p) with time zone, varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "atan",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Arc tangent"
+  },
+  {
+    "function": "atan2",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Arc tangent of given fraction"
+  },
+  {
+    "function": "avg",
+    "return_type": "decimal(p,s)",
+    "argument_types": "decimal(p,s)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Calculates the average value"
+  },
+  {
+    "function": "avg",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "avg",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "avg",
+    "return_type": "interval day to second",
+    "argument_types": "interval day to second",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "avg",
+    "return_type": "interval year to month",
+    "argument_types": "interval year to month",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "avg",
+    "return_type": "real",
+    "argument_types": "real",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the average value of the argument"
+  },
+  {
+    "function": "barslast",
+    "return_type": "integer",
+    "argument_types": "boolean",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "The number of rows since the condition first held"
+  },
+  {
+    "function": "beta_cdf",
+    "return_type": "double",
+    "argument_types": "double, double, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Beta cdf given the a, b parameters and value"
+  },
+  {
+    "function": "bit_count",
+    "return_type": "bigint",
+    "argument_types": "bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Count number of set bits in 2's complement representation"
+  },
+  {
+    "function": "bitwise_and",
+    "return_type": "bigint",
+    "argument_types": "bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Bitwise AND in 2's complement arithmetic"
+  },
+  {
+    "function": "bitwise_and_agg",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "bitwise_left_shift",
+    "return_type": "bigint",
+    "argument_types": "bigint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise left shift"
+  },
+  {
+    "function": "bitwise_left_shift",
+    "return_type": "integer",
+    "argument_types": "integer, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise left shift"
+  },
+  {
+    "function": "bitwise_left_shift",
+    "return_type": "smallint",
+    "argument_types": "smallint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise left shift"
+  },
+  {
+    "function": "bitwise_left_shift",
+    "return_type": "tinyint",
+    "argument_types": "tinyint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise left shift"
+  },
+  {
+    "function": "bitwise_not",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Bitwise NOT in 2's complement arithmetic"
+  },
+  {
+    "function": "bitwise_or",
+    "return_type": "bigint",
+    "argument_types": "bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Bitwise OR in 2's complement arithmetic"
+  },
+  {
+    "function": "bitwise_or_agg",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "bitwise_right_shift",
+    "return_type": "bigint",
+    "argument_types": "bigint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise logical right shift"
+  },
+  {
+    "function": "bitwise_right_shift",
+    "return_type": "integer",
+    "argument_types": "integer, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise logical right shift"
+  },
+  {
+    "function": "bitwise_right_shift",
+    "return_type": "smallint",
+    "argument_types": "smallint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise logical right shift"
+  },
+  {
+    "function": "bitwise_right_shift",
+    "return_type": "tinyint",
+    "argument_types": "tinyint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise logical right shift"
+  },
+  {
+    "function": "bitwise_right_shift_arithmetic",
+    "return_type": "bigint",
+    "argument_types": "bigint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise arithmetic right shift"
+  },
+  {
+    "function": "bitwise_right_shift_arithmetic",
+    "return_type": "integer",
+    "argument_types": "integer, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise arithmetic right shift"
+  },
+  {
+    "function": "bitwise_right_shift_arithmetic",
+    "return_type": "smallint",
+    "argument_types": "smallint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise arithmetic right shift"
+  },
+  {
+    "function": "bitwise_right_shift_arithmetic",
+    "return_type": "tinyint",
+    "argument_types": "tinyint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "bitwise arithmetic right shift"
+  },
+  {
+    "function": "bitwise_xor",
+    "return_type": "bigint",
+    "argument_types": "bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Bitwise XOR in 2's complement arithmetic"
+  },
+  {
+    "function": "bool_and",
+    "return_type": "boolean",
+    "argument_types": "boolean",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "bool_or",
+    "return_type": "boolean",
+    "argument_types": "boolean",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "cardinality",
+    "return_type": "bigint",
+    "argument_types": "array(e)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns the cardinality (length) of the array"
+  },
+  {
+    "function": "cardinality",
+    "return_type": "bigint",
+    "argument_types": "hyperloglog",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Compute the cardinality of a HyperLogLog instance"
+  },
+  {
+    "function": "cardinality",
+    "return_type": "bigint",
+    "argument_types": "map(k,v)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns the cardinality (the number of key-value pairs) of the map"
+  },
+  {
+    "function": "cardinality",
+    "return_type": "bigint",
+    "argument_types": "setdigest",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "cbrt",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Cube root"
+  },
+  {
+    "function": "ceil",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceil",
+    "return_type": "decimal(rp,0)",
+    "argument_types": "decimal(p,s)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceil",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceil",
+    "return_type": "integer",
+    "argument_types": "integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceil",
+    "return_type": "real",
+    "argument_types": "real",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceil",
+    "return_type": "smallint",
+    "argument_types": "smallint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceil",
+    "return_type": "tinyint",
+    "argument_types": "tinyint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceiling",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceiling",
+    "return_type": "decimal(rp,0)",
+    "argument_types": "decimal(p,s)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceiling",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceiling",
+    "return_type": "integer",
+    "argument_types": "integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceiling",
+    "return_type": "real",
+    "argument_types": "real",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceiling",
+    "return_type": "smallint",
+    "argument_types": "smallint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "ceiling",
+    "return_type": "tinyint",
+    "argument_types": "tinyint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round up to nearest integer"
+  },
+  {
+    "function": "checksum",
+    "return_type": "varbinary",
+    "argument_types": "t",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Checksum of the given values"
+  },
+  {
+    "function": "chr",
+    "return_type": "varchar(1)",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Convert Unicode code point to a string"
+  },
+  {
+    "function": "codepoint",
+    "return_type": "integer",
+    "argument_types": "varchar(1)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns Unicode code point of a single character string"
+  },
+  {
+    "function": "combinations",
+    "return_type": "array(array(t))",
+    "argument_types": "array(t), integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Return n-element subsets from array"
+  },
+  {
+    "function": "concat",
+    "return_type": "array(E)",
+    "argument_types": "E, array(E)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Concatenates an element to an array"
+  },
+  {
+    "function": "concat",
+    "return_type": "array(E)",
+    "argument_types": "array(E)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Concatenates given arrays"
+  },
+  {
+    "function": "concat",
+    "return_type": "array(E)",
+    "argument_types": "array(E), E",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Concatenates an array to an element"
+  },
+  {
+    "function": "concat",
+    "return_type": "char(u)",
+    "argument_types": "char(x), char(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Concatenates given character strings"
+  },
+  {
+    "function": "concat",
+    "return_type": "varbinary",
+    "argument_types": "varbinary",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "concatenates given varbinary values"
+  },
+  {
+    "function": "concat",
+    "return_type": "varchar",
+    "argument_types": "varchar",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Concatenates given strings"
+  },
+  {
+    "function": "concat_ws",
+    "return_type": "varchar",
+    "argument_types": "varchar, array(varchar)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "concat_ws",
+    "return_type": "varchar",
+    "argument_types": "varchar, varchar",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Concatenates elements using separator"
+  },
+  {
+    "function": "contains",
+    "return_type": "boolean",
+    "argument_types": "array(t), t",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Determines whether given value exists in the array"
+  },
+  {
+    "function": "contains",
+    "return_type": "boolean",
+    "argument_types": "varchar, ipaddress",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Determines whether given IP address exists in the CIDR"
+  },
+  {
+    "function": "contains_sequence",
+    "return_type": "boolean",
+    "argument_types": "array(t), array(t)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Determines whether an array contains a sequence, with the values in the exact order"
+  },
+  {
+    "function": "corr",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "corr",
+    "return_type": "real",
+    "argument_types": "real, real",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "cos",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Cosine"
+  },
+  {
+    "function": "cosh",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Hyperbolic cosine"
+  },
+  {
+    "function": "cosine_similarity",
+    "return_type": "double",
+    "argument_types": "map(varchar,double), map(varchar,double)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Cosine similarity between the given sparse vectors"
+  },
+  {
+    "function": "count",
+    "return_type": "bigint",
+    "argument_types": "",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "count",
+    "return_type": "bigint",
+    "argument_types": "t",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Counts the non-null values"
+  },
+  {
+    "function": "count_if",
+    "return_type": "bigint",
+    "argument_types": "boolean",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "covar_pop",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "covar_pop",
+    "return_type": "real",
+    "argument_types": "real, real",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "covar_samp",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "covar_samp",
+    "return_type": "real",
+    "argument_types": "real, real",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "crossing",
+    "return_type": "bigint",
+    "argument_types": "double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "The first column of the current row is greater than the second column and the first column of the next row is less than the second column"
+  },
+  {
+    "function": "cume_dist",
+    "return_type": "double",
+    "argument_types": "",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "current_date",
+    "return_type": "date",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Current date"
+  },
+  {
+    "function": "current_groups",
+    "return_type": "array(varchar)",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Current groups of current user"
+  },
+  {
+    "function": "current_timezone",
+    "return_type": "varchar",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Current time zone"
+  },
+  {
+    "function": "date",
+    "return_type": "date",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "date",
+    "return_type": "date",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "date",
+    "return_type": "date",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "date_add",
+    "return_type": "date",
+    "argument_types": "varchar(x), bigint, date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Add the specified amount of date to the given date"
+  },
+  {
+    "function": "date_add",
+    "return_type": "time(p)",
+    "argument_types": "varchar(x), bigint, time(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Add the specified amount of time to the given time"
+  },
+  {
+    "function": "date_add",
+    "return_type": "time(p) with time zone",
+    "argument_types": "varchar(x), bigint, time(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Add the specified amount of time to the given time"
+  },
+  {
+    "function": "date_add",
+    "return_type": "timestamp(p)",
+    "argument_types": "varchar(x), bigint, timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Add the specified amount of time to the given timestamp"
+  },
+  {
+    "function": "date_add",
+    "return_type": "timestamp(p) with time zone",
+    "argument_types": "varchar(x), bigint, timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Add the specified amount of time to the given timestamp"
+  },
+  {
+    "function": "date_diff",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), date, date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Difference of the given dates in the given unit"
+  },
+  {
+    "function": "date_diff",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), time(p) with time zone, time(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Difference of the given times in the given unit"
+  },
+  {
+    "function": "date_diff",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), time(p), time(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Difference of the given times in the given unit"
+  },
+  {
+    "function": "date_diff",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), timestamp(p) with time zone, timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Difference of the given times in the given unit"
+  },
+  {
+    "function": "date_diff",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), timestamp(p), timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Difference of the given times in the given unit"
+  },
+  {
+    "function": "date_format",
+    "return_type": "varchar",
+    "argument_types": "timestamp(p) with time zone, varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Formats the given timestamp by the given format"
+  },
+  {
+    "function": "date_format",
+    "return_type": "varchar",
+    "argument_types": "timestamp(p), varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Formats the given timestamp by the given format"
+  },
+  {
+    "function": "date_parse",
+    "return_type": "timestamp(3)",
+    "argument_types": "varchar(x), varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "date_trunc",
+    "return_type": "date",
+    "argument_types": "varchar(x), date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Truncate to the specified precision in the session timezone"
+  },
+  {
+    "function": "date_trunc",
+    "return_type": "time(p)",
+    "argument_types": "varchar(x), time(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Truncate to the specified precision"
+  },
+  {
+    "function": "date_trunc",
+    "return_type": "time(p) with time zone",
+    "argument_types": "varchar(x), time(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Truncate to the specified precision"
+  },
+  {
+    "function": "date_trunc",
+    "return_type": "timestamp(p)",
+    "argument_types": "varchar(x), timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Truncate to the specified precision in the session timezone"
+  },
+  {
+    "function": "date_trunc",
+    "return_type": "timestamp(p) with time zone",
+    "argument_types": "varchar(x), timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Truncate to the specified precision"
+  },
+  {
+    "function": "day",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the month of the given date"
+  },
+  {
+    "function": "day",
+    "return_type": "bigint",
+    "argument_types": "interval day to second",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the month of the given interval"
+  },
+  {
+    "function": "day",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the month of the given timestamp"
+  },
+  {
+    "function": "day",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the month of the given timestamp"
+  },
+  {
+    "function": "day_of_month",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the month of the given date"
+  },
+  {
+    "function": "day_of_month",
+    "return_type": "bigint",
+    "argument_types": "interval day to second",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the month of the given interval"
+  },
+  {
+    "function": "day_of_month",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the month of the given timestamp"
+  },
+  {
+    "function": "day_of_month",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the month of the given timestamp"
+  },
+  {
+    "function": "day_of_week",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the week of the given date"
+  },
+  {
+    "function": "day_of_week",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the week of the given timestamp"
+  },
+  {
+    "function": "day_of_week",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the week of the given timestamp"
+  },
+  {
+    "function": "day_of_year",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the year of the given date"
+  },
+  {
+    "function": "day_of_year",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the year of the given timestamp"
+  },
+  {
+    "function": "day_of_year",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the year of the given timestamp"
+  },
+  {
+    "function": "degrees",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Converts an angle in radians to degrees"
+  },
+  {
+    "function": "dense_rank",
+    "return_type": "bigint",
+    "argument_types": "",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "dow",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the week of the given date"
+  },
+  {
+    "function": "dow",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the week of the given timestamp"
+  },
+  {
+    "function": "dow",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the week of the given timestamp"
+  },
+  {
+    "function": "doy",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the year of the given date"
+  },
+  {
+    "function": "doy",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the year of the given timestamp"
+  },
+  {
+    "function": "doy",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Day of the year of the given timestamp"
+  },
+  {
+    "function": "e",
+    "return_type": "double",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Euler's number"
+  },
+  {
+    "function": "element_at",
+    "return_type": "V",
+    "argument_types": "map(K,V), K",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Get value for the given key, or null if it does not exist"
+  },
+  {
+    "function": "element_at",
+    "return_type": "e",
+    "argument_types": "array(e), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Get element of array at given index"
+  },
+  {
+    "function": "eval",
+    "return_type": "double",
+    "argument_types": "varchar(64)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "calculate the expression"
+  },
+  {
+    "function": "eval",
+    "return_type": "double",
+    "argument_types": "varchar(64), integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "calculate the expression"
+  },
+  {
+    "function": "eval_str",
+    "return_type": "varchar(64)",
+    "argument_types": "varchar(64)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "calculate the expression"
+  },
+  {
+    "function": "eval_str",
+    "return_type": "varchar(64)",
+    "argument_types": "varchar(64), integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "calculate the expression"
+  },
+  {
+    "function": "every",
+    "return_type": "boolean",
+    "argument_types": "boolean",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "exp",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Euler's number raised to the given power"
+  },
+  {
+    "function": "filter",
+    "return_type": "array(t)",
+    "argument_types": "array(t), function(t,boolean)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Return array containing elements that match the given predicate"
+  },
+  {
+    "function": "first_value",
+    "return_type": "t",
+    "argument_types": "t",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "flatten",
+    "return_type": "array(E)",
+    "argument_types": "array(array(E))",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Flattens the given array"
+  },
+  {
+    "function": "floor",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round down to nearest integer"
+  },
+  {
+    "function": "floor",
+    "return_type": "decimal(rp,0)",
+    "argument_types": "decimal(p,s)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round down to nearest integer"
+  },
+  {
+    "function": "floor",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round down to nearest integer"
+  },
+  {
+    "function": "floor",
+    "return_type": "integer",
+    "argument_types": "integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round down to nearest integer"
+  },
+  {
+    "function": "floor",
+    "return_type": "real",
+    "argument_types": "real",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round down to nearest integer"
+  },
+  {
+    "function": "floor",
+    "return_type": "smallint",
+    "argument_types": "smallint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round down to nearest integer"
+  },
+  {
+    "function": "floor",
+    "return_type": "tinyint",
+    "argument_types": "tinyint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round down to nearest integer"
+  },
+  {
+    "function": "format_datetime",
+    "return_type": "varchar",
+    "argument_types": "timestamp(p) with time zone, varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Formats the given time by the given format"
+  },
+  {
+    "function": "format_datetime",
+    "return_type": "varchar",
+    "argument_types": "timestamp(p), varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Formats the given time by the given format"
+  },
+  {
+    "function": "format_number",
+    "return_type": "varchar",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Formats large number using a unit symbol"
+  },
+  {
+    "function": "format_number",
+    "return_type": "varchar",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Formats large number using a unit symbol"
+  },
+  {
+    "function": "from_base",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Convert a string in the given base to a number"
+  },
+  {
+    "function": "from_hex",
+    "return_type": "varbinary",
+    "argument_types": "varbinary",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Decode hex encoded binary data"
+  },
+  {
+    "function": "from_hex",
+    "return_type": "varbinary",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Decode hex encoded binary data"
+  },
+  {
+    "function": "from_iso8601_date",
+    "return_type": "date",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "from_iso8601_timestamp",
+    "return_type": "timestamp(3) with time zone",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "from_iso8601_timestamp_nanos",
+    "return_type": "timestamp(9) with time zone",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "from_unixtime",
+    "return_type": "timestamp(3) with time zone",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "from_unixtime",
+    "return_type": "timestamp(3) with time zone",
+    "argument_types": "double, bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "from_unixtime",
+    "return_type": "timestamp(3) with time zone",
+    "argument_types": "double, varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "from_unixtime_nanos",
+    "return_type": "timestamp(9) with time zone",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "from_unixtime_nanos",
+    "return_type": "timestamp(9) with time zone",
+    "argument_types": "decimal(p,s)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "from_utf8",
+    "return_type": "varchar",
+    "argument_types": "varbinary",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Decodes the UTF-8 encoded string"
+  },
+  {
+    "function": "from_utf8",
+    "return_type": "varchar",
+    "argument_types": "varbinary, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Decodes the UTF-8 encoded string"
+  },
+  {
+    "function": "from_utf8",
+    "return_type": "varchar",
+    "argument_types": "varbinary, varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Decodes the UTF-8 encoded string"
+  },
+  {
+    "function": "geometric_mean",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "geometric_mean",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "geometric_mean",
+    "return_type": "real",
+    "argument_types": "real",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "greatest",
+    "return_type": "E",
+    "argument_types": "E",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Get the largest of the given values"
+  },
+  {
+    "function": "hamming_distance",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Computes Hamming distance between two strings"
+  },
+  {
+    "function": "histogram",
+    "return_type": "map(t,bigint)",
+    "argument_types": "t",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Count the number of times each value occurs"
+  },
+  {
+    "function": "hour",
+    "return_type": "bigint",
+    "argument_types": "interval day to second",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Hour of the day of the given interval"
+  },
+  {
+    "function": "hour",
+    "return_type": "bigint",
+    "argument_types": "time(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Hour of the day of the given time"
+  },
+  {
+    "function": "hour",
+    "return_type": "bigint",
+    "argument_types": "time(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Hour of the day of the given time"
+  },
+  {
+    "function": "hour",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Hour of the day of the given timestamp"
+  },
+  {
+    "function": "hour",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Hour of the day of the given timestamp"
+  },
+  {
+    "function": "infinity",
+    "return_type": "double",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Infinity"
+  },
+  {
+    "function": "inverse_beta_cdf",
+    "return_type": "double",
+    "argument_types": "double, double, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Inverse of Beta cdf given a, b parameters and probability"
+  },
+  {
+    "function": "inverse_normal_cdf",
+    "return_type": "double",
+    "argument_types": "double, double, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Inverse of normal cdf given a mean, std, and probability"
+  },
+  {
+    "function": "is_finite",
+    "return_type": "boolean",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Test if value is finite"
+  },
+  {
+    "function": "is_infinite",
+    "return_type": "boolean",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Test if value is infinite"
+  },
+  {
+    "function": "is_json_scalar",
+    "return_type": "boolean",
+    "argument_types": "json",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "is_json_scalar",
+    "return_type": "boolean",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "is_nan",
+    "return_type": "boolean",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Test if value is not-a-number"
+  },
+  {
+    "function": "is_nan",
+    "return_type": "boolean",
+    "argument_types": "real",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Test if value is not-a-number"
+  },
+  {
+    "function": "json_array_contains",
+    "return_type": "boolean",
+    "argument_types": "json, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_contains",
+    "return_type": "boolean",
+    "argument_types": "json, boolean",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_contains",
+    "return_type": "boolean",
+    "argument_types": "json, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_contains",
+    "return_type": "boolean",
+    "argument_types": "json, varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_contains",
+    "return_type": "boolean",
+    "argument_types": "varchar(x), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_contains",
+    "return_type": "boolean",
+    "argument_types": "varchar(x), boolean",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_contains",
+    "return_type": "boolean",
+    "argument_types": "varchar(x), double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_contains",
+    "return_type": "boolean",
+    "argument_types": "varchar(x), varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_get",
+    "return_type": "json",
+    "argument_types": "json, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_get",
+    "return_type": "json",
+    "argument_types": "varchar(x), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_length",
+    "return_type": "bigint",
+    "argument_types": "json",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_array_length",
+    "return_type": "bigint",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_extract",
+    "return_type": "json",
+    "argument_types": "json, jsonpath",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_extract",
+    "return_type": "json",
+    "argument_types": "varchar(x), jsonpath",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_extract_scalar",
+    "return_type": "varchar",
+    "argument_types": "json, jsonpath",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_extract_scalar",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), jsonpath",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_format",
+    "return_type": "varchar",
+    "argument_types": "json",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_parse",
+    "return_type": "json",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_size",
+    "return_type": "bigint",
+    "argument_types": "json, jsonpath",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "json_size",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), jsonpath",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "kurtosis",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the (excess) kurtosis of the argument"
+  },
+  {
+    "function": "kurtosis",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the (excess) kurtosis of the argument"
+  },
+  {
+    "function": "lag",
+    "return_type": "t",
+    "argument_types": "t",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "lag",
+    "return_type": "t",
+    "argument_types": "t, bigint",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "lag",
+    "return_type": "t",
+    "argument_types": "t, bigint, t",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "last_day_of_month",
+    "return_type": "date",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Last day of the month of the given date"
+  },
+  {
+    "function": "last_day_of_month",
+    "return_type": "date",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Last day of the month of the given timestamp"
+  },
+  {
+    "function": "last_day_of_month",
+    "return_type": "date",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Last day of the month of the given timestamp"
+  },
+  {
+    "function": "last_value",
+    "return_type": "t",
+    "argument_types": "t",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "lead",
+    "return_type": "t",
+    "argument_types": "t",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "lead",
+    "return_type": "t",
+    "argument_types": "t, bigint",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "lead",
+    "return_type": "t",
+    "argument_types": "t, bigint, t",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "least",
+    "return_type": "E",
+    "argument_types": "E",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Get the smallest of the given values"
+  },
+  {
+    "function": "length",
+    "return_type": "bigint",
+    "argument_types": "char(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Count of code points of the given string"
+  },
+  {
+    "function": "length",
+    "return_type": "bigint",
+    "argument_types": "varbinary",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Length of the given binary"
+  },
+  {
+    "function": "length",
+    "return_type": "bigint",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Count of code points of the given string"
+  },
+  {
+    "function": "levenshtein_distance",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Computes Levenshtein distance between two strings"
+  },
+  {
+    "function": "listagg",
+    "return_type": "varchar",
+    "argument_types": "varchar, varchar, boolean, varchar, boolean",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "concatenates the input values with the specified separator"
+  },
+  {
+    "function": "ln",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Natural logarithm"
+  },
+  {
+    "function": "log",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Logarithm to given base"
+  },
+  {
+    "function": "log10",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Logarithm to base 10"
+  },
+  {
+    "function": "log2",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Logarithm to base 2"
+  },
+  {
+    "function": "lower",
+    "return_type": "char(x)",
+    "argument_types": "char(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Converts the string to lower case"
+  },
+  {
+    "function": "lower",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Converts the string to lower case"
+  },
+  {
+    "function": "lpad",
+    "return_type": "varbinary",
+    "argument_types": "varbinary, bigint, varbinary",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Pads a varbinary on the left"
+  },
+  {
+    "function": "lpad",
+    "return_type": "varchar",
+    "argument_types": "varchar(x), bigint, varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Pads a string on the left"
+  },
+  {
+    "function": "ltrim",
+    "return_type": "varchar(x)",
+    "argument_types": "char(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Removes whitespace from the beginning of a string"
+  },
+  {
+    "function": "ltrim",
+    "return_type": "varchar(x)",
+    "argument_types": "char(x), codepoints",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remove the longest string containing only given characters from the beginning of a string"
+  },
+  {
+    "function": "ltrim",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Removes whitespace from the beginning of a string"
+  },
+  {
+    "function": "ltrim",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), codepoints",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remove the longest string containing only given characters from the beginning of a string"
+  },
+  {
+    "function": "majority",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "majority",
+    "return_type": "varchar",
+    "argument_types": "varchar",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "map",
+    "return_type": "map(K,V)",
+    "argument_types": "array(K), array(V)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Constructs a map from the given key/value arrays"
+  },
+  {
+    "function": "map",
+    "return_type": "map(unknown,unknown)",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Creates an empty map"
+  },
+  {
+    "function": "map_agg",
+    "return_type": "map(k,v)",
+    "argument_types": "k, v",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Aggregates all the rows (key/value pairs) into a single map"
+  },
+  {
+    "function": "map_concat",
+    "return_type": "map(K,V)",
+    "argument_types": "map(K,V)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Concatenates given maps"
+  },
+  {
+    "function": "map_entries",
+    "return_type": "array(row(k,v))",
+    "argument_types": "map(k,v)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Construct an array of entries from a given map"
+  },
+  {
+    "function": "map_filter",
+    "return_type": "map(K,V)",
+    "argument_types": "map(K,V), function(K,V,boolean)",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "return map containing entries that match the given predicate"
+  },
+  {
+    "function": "map_from_entries",
+    "return_type": "map(k,v)",
+    "argument_types": "array(row(k,v))",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Construct a map from an array of entries"
+  },
+  {
+    "function": "map_keys",
+    "return_type": "array(k)",
+    "argument_types": "map(k,v)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns the keys of the given map(K,V) as an array"
+  },
+  {
+    "function": "map_union",
+    "return_type": "map(k,v)",
+    "argument_types": "map(k,v)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Aggregate all the maps into a single map"
+  },
+  {
+    "function": "map_values",
+    "return_type": "array(v)",
+    "argument_types": "map(k,v)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns the values of the given map(K,V) as an array"
+  },
+  {
+    "function": "map_zip_with",
+    "return_type": "map(K,V3)",
+    "argument_types": "map(K,V1), map(K,V2), function(K,V1,V2,V3)",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "Merge two maps into a single map by applying the lambda function to the pair of values with the same key"
+  },
+  {
+    "function": "max",
+    "return_type": "array(e)",
+    "argument_types": "e, bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the maximum values of the argument"
+  },
+  {
+    "function": "max",
+    "return_type": "t",
+    "argument_types": "t",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the maximum value of the argument"
+  },
+  {
+    "function": "max_by",
+    "return_type": "array(v)",
+    "argument_types": "v, k, bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the values of the first argument associated with the maximum values of the second argument"
+  },
+  {
+    "function": "max_by",
+    "return_type": "v",
+    "argument_types": "v, k",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the value of the first argument, associated with the maximum value of the second argument"
+  },
+  {
+    "function": "median",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Function that calculates the median of column (double type or long type)"
+  },
+  {
+    "function": "median",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Function that calculates the median of column (double type or long type)"
+  },
+  {
+    "function": "merge",
+    "return_type": "hyperloglog",
+    "argument_types": "hyperloglog",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "merge",
+    "return_type": "qdigest(v)",
+    "argument_types": "qdigest(v)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Merges the input quantile digests into a single quantile digest"
+  },
+  {
+    "function": "merge",
+    "return_type": "tdigest",
+    "argument_types": "tdigest",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "millisecond",
+    "return_type": "bigint",
+    "argument_types": "interval day to second",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Millisecond of the second of the given interval"
+  },
+  {
+    "function": "millisecond",
+    "return_type": "bigint",
+    "argument_types": "time(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Millisecond of the second of the given time"
+  },
+  {
+    "function": "millisecond",
+    "return_type": "bigint",
+    "argument_types": "time(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Millisecond of the second of the given time"
+  },
+  {
+    "function": "millisecond",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Millisecond of the second of the given timestamp"
+  },
+  {
+    "function": "millisecond",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Millisecond of the second of the given timestamp"
+  },
+  {
+    "function": "min",
+    "return_type": "array(e)",
+    "argument_types": "e, bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the minimum values of the argument"
+  },
+  {
+    "function": "min",
+    "return_type": "t",
+    "argument_types": "t",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the minimum value of the argument"
+  },
+  {
+    "function": "min_by",
+    "return_type": "array(v)",
+    "argument_types": "v, k, bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the values of the first argument associated with the minimum values of the second argument"
+  },
+  {
+    "function": "min_by",
+    "return_type": "v",
+    "argument_types": "v, k",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the value of the first argument, associated with the minimum value of the second argument"
+  },
+  {
+    "function": "minute",
+    "return_type": "bigint",
+    "argument_types": "interval day to second",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Minute of the hour of the given interval"
+  },
+  {
+    "function": "minute",
+    "return_type": "bigint",
+    "argument_types": "time(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Minute of the hour of the given time"
+  },
+  {
+    "function": "minute",
+    "return_type": "bigint",
+    "argument_types": "time(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Minute of the hour of the given time"
+  },
+  {
+    "function": "minute",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Minute of the hour of the given timestamp"
+  },
+  {
+    "function": "minute",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Minute of the hour of the given timestamp"
+  },
+  {
+    "function": "mod",
+    "return_type": "bigint",
+    "argument_types": "bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remainder of given quotient"
+  },
+  {
+    "function": "mod",
+    "return_type": "decimal(r_precision,r_scale)",
+    "argument_types": "decimal(a_precision,a_scale), decimal(b_precision,b_scale)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "mod",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remainder of given quotient"
+  },
+  {
+    "function": "mod",
+    "return_type": "integer",
+    "argument_types": "integer, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remainder of given quotient"
+  },
+  {
+    "function": "mod",
+    "return_type": "real",
+    "argument_types": "real, real",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remainder of given quotient"
+  },
+  {
+    "function": "mod",
+    "return_type": "smallint",
+    "argument_types": "smallint, smallint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remainder of given quotient"
+  },
+  {
+    "function": "mod",
+    "return_type": "tinyint",
+    "argument_types": "tinyint, tinyint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remainder of given quotient"
+  },
+  {
+    "function": "month",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Month of the year of the given date"
+  },
+  {
+    "function": "month",
+    "return_type": "bigint",
+    "argument_types": "interval year to month",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Month of the year of the given interval"
+  },
+  {
+    "function": "month",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Month of the year of the given timestamp"
+  },
+  {
+    "function": "month",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Month of the year of the given timestamp"
+  },
+  {
+    "function": "multimap_agg",
+    "return_type": "map(k,array(v))",
+    "argument_types": "k, v",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Aggregates all the rows (key/value pairs) into a single multimap"
+  },
+  {
+    "function": "multimap_from_entries",
+    "return_type": "map(k,array(v))",
+    "argument_types": "array(row(k,v))",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Construct a multimap from an array of entries"
+  },
+  {
+    "function": "nan",
+    "return_type": "double",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Constant representing not-a-number"
+  },
+  {
+    "function": "ngrams",
+    "return_type": "array(array(t))",
+    "argument_types": "array(t), integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Return N-grams for the input"
+  },
+  {
+    "function": "none_match",
+    "return_type": "boolean",
+    "argument_types": "array(t), function(t,boolean)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns true if all elements of the array don't match the given predicate"
+  },
+  {
+    "function": "normal_cdf",
+    "return_type": "double",
+    "argument_types": "double, double, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Normal cdf given a mean, standard deviation, and value"
+  },
+  {
+    "function": "normalize",
+    "return_type": "varchar",
+    "argument_types": "varchar(x), varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Transforms the string to normalized form"
+  },
+  {
+    "function": "now",
+    "return_type": "timestamp(3) with time zone",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Current timestamp with time zone"
+  },
+  {
+    "function": "nth_root",
+    "return_type": "double",
+    "argument_types": "double, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Value of nth root"
+  },
+  {
+    "function": "nth_value",
+    "return_type": "t",
+    "argument_types": "t, bigint",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "ntile",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "numeric_histogram",
+    "return_type": "map(double,double)",
+    "argument_types": "bigint, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "numeric_histogram",
+    "return_type": "map(double,double)",
+    "argument_types": "bigint, double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "numeric_histogram",
+    "return_type": "map(real,real)",
+    "argument_types": "bigint, real",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "numeric_histogram",
+    "return_type": "map(real,real)",
+    "argument_types": "bigint, real, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "parse_datetime",
+    "return_type": "timestamp(3) with time zone",
+    "argument_types": "varchar(x), varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Parses the specified date/time by the given format"
+  },
+  {
+    "function": "parse_duration",
+    "return_type": "interval day to second",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Convert duration string to an interval"
+  },
+  {
+    "function": "percent_rank",
+    "return_type": "double",
+    "argument_types": "",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "pi",
+    "return_type": "double",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "The constant Pi"
+  },
+  {
+    "function": "pow",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Value raised to the power of exponent"
+  },
+  {
+    "function": "power",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Value raised to the power of exponent"
+  },
+  {
+    "function": "quarter",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Quarter of the year of the given date"
+  },
+  {
+    "function": "quarter",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Quarter of the year of the given timestamp"
+  },
+  {
+    "function": "quarter",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Quarter of the year of the given timestamp"
+  },
+  {
+    "function": "query_index",
+    "return_type": "array(row(\"stock\" varchar,\"value\" double,\"i_date\" varchar))",
+    "argument_types": "varchar, varchar, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "returns array(row(stock varchar, value double, i_date varchar))"
+  },
+  {
+    "function": "radians",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Converts an angle in degrees to radians"
+  },
+  {
+    "function": "rand",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between 0 and value (exclusive)"
+  },
+  {
+    "function": "rand",
+    "return_type": "bigint",
+    "argument_types": "bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between start and stop (exclusive)"
+  },
+  {
+    "function": "rand",
+    "return_type": "double",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random value"
+  },
+  {
+    "function": "rand",
+    "return_type": "integer",
+    "argument_types": "integer",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between 0 and value (exclusive)"
+  },
+  {
+    "function": "rand",
+    "return_type": "integer",
+    "argument_types": "integer, integer",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between start and stop (exclusive)"
+  },
+  {
+    "function": "rand",
+    "return_type": "smallint",
+    "argument_types": "smallint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between 0 and value (exclusive)"
+  },
+  {
+    "function": "rand",
+    "return_type": "smallint",
+    "argument_types": "smallint, smallint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between start and stop (exclusive)"
+  },
+  {
+    "function": "rand",
+    "return_type": "tinyint",
+    "argument_types": "tinyint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between 0 and value (exclusive)"
+  },
+  {
+    "function": "rand",
+    "return_type": "tinyint",
+    "argument_types": "tinyint, tinyint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between start and stop (exclusive)"
+  },
+  {
+    "function": "random",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between 0 and value (exclusive)"
+  },
+  {
+    "function": "random",
+    "return_type": "bigint",
+    "argument_types": "bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between start and stop (exclusive)"
+  },
+  {
+    "function": "random",
+    "return_type": "double",
+    "argument_types": "",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random value"
+  },
+  {
+    "function": "random",
+    "return_type": "integer",
+    "argument_types": "integer",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between 0 and value (exclusive)"
+  },
+  {
+    "function": "random",
+    "return_type": "integer",
+    "argument_types": "integer, integer",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between start and stop (exclusive)"
+  },
+  {
+    "function": "random",
+    "return_type": "smallint",
+    "argument_types": "smallint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between 0 and value (exclusive)"
+  },
+  {
+    "function": "random",
+    "return_type": "smallint",
+    "argument_types": "smallint, smallint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between start and stop (exclusive)"
+  },
+  {
+    "function": "random",
+    "return_type": "tinyint",
+    "argument_types": "tinyint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between 0 and value (exclusive)"
+  },
+  {
+    "function": "random",
+    "return_type": "tinyint",
+    "argument_types": "tinyint, tinyint",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "A pseudo-random number between start and stop (exclusive)"
+  },
+  {
+    "function": "rank",
+    "return_type": "bigint",
+    "argument_types": "",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "reduce",
+    "return_type": "R",
+    "argument_types": "array(T), S, function(S,T,S), function(S,R)",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "Reduce elements of the array into a single value"
+  },
+  {
+    "function": "reduce_agg",
+    "return_type": "S",
+    "argument_types": "T, S, function(S,T,S), function(S,S,S)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Reduce input elements into a single value"
+  },
+  {
+    "function": "regexp_count",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), joniregexp",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns the number of times that a pattern occurs in a string"
+  },
+  {
+    "function": "regexp_extract",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), joniregexp",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "String extracted using the given pattern"
+  },
+  {
+    "function": "regexp_extract",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), joniregexp, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns regex group of extracted string with a pattern"
+  },
+  {
+    "function": "regexp_extract_all",
+    "return_type": "array(varchar(x))",
+    "argument_types": "varchar(x), joniregexp",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "String(s) extracted using the given pattern"
+  },
+  {
+    "function": "regexp_extract_all",
+    "return_type": "array(varchar(x))",
+    "argument_types": "varchar(x), joniregexp, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Group(s) extracted using the given pattern"
+  },
+  {
+    "function": "regexp_like",
+    "return_type": "boolean",
+    "argument_types": "varchar(x), joniregexp",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns whether the pattern is contained within the string"
+  },
+  {
+    "function": "regexp_position",
+    "return_type": "integer",
+    "argument_types": "varchar(x), joniregexp",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns the index of the matched substring"
+  },
+  {
+    "function": "regexp_position",
+    "return_type": "integer",
+    "argument_types": "varchar(x), joniregexp, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns the index of the matched substring starting from the specified position"
+  },
+  {
+    "function": "regexp_position",
+    "return_type": "integer",
+    "argument_types": "varchar(x), joniregexp, integer, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns the index of the n-th matched substring starting from the specified position"
+  },
+  {
+    "function": "regexp_replace",
+    "return_type": "varchar",
+    "argument_types": "varchar, joniregexp, function(array(varchar),varchar(x))",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Replaces substrings matching a regular expression using a lambda function"
+  },
+  {
+    "function": "regexp_replace",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), joniregexp",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Removes substrings matching a regular expression"
+  },
+  {
+    "function": "regexp_replace",
+    "return_type": "varchar(z)",
+    "argument_types": "varchar(x), joniregexp, varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Replaces substrings matching a regular expression by given string"
+  },
+  {
+    "function": "regexp_split",
+    "return_type": "array(varchar(x))",
+    "argument_types": "varchar(x), joniregexp",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns array of strings split by pattern"
+  },
+  {
+    "function": "regr_intercept",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "regr_intercept",
+    "return_type": "real",
+    "argument_types": "real, real",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "regr_slope",
+    "return_type": "double",
+    "argument_types": "double, double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "regr_slope",
+    "return_type": "real",
+    "argument_types": "real, real",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "repeat",
+    "return_type": "array(t)",
+    "argument_types": "t, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Repeat an element for a given number of times"
+  },
+  {
+    "function": "replace",
+    "return_type": "varchar(u)",
+    "argument_types": "varchar(x), varchar(y), varchar(z)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Greedily replaces occurrences of a pattern with a string"
+  },
+  {
+    "function": "replace",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Greedily removes occurrences of a pattern in a string"
+  },
+  {
+    "function": "reverse",
+    "return_type": "array(e)",
+    "argument_types": "array(e)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns an array which has the reversed order of the given array."
+  },
+  {
+    "function": "reverse",
+    "return_type": "varbinary",
+    "argument_types": "varbinary",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Reverse a given varbinary"
+  },
+  {
+    "function": "reverse",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Reverse all code points in a given string"
+  },
+  {
+    "function": "round",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to nearest integer"
+  },
+  {
+    "function": "round",
+    "return_type": "bigint",
+    "argument_types": "bigint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to nearest integer"
+  },
+  {
+    "function": "round",
+    "return_type": "decimal(rp,rs)",
+    "argument_types": "decimal(p,s)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to nearest integer"
+  },
+  {
+    "function": "round",
+    "return_type": "decimal(rp,s)",
+    "argument_types": "decimal(p,s), integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to given number of decimal places"
+  },
+  {
+    "function": "round",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to nearest integer"
+  },
+  {
+    "function": "round",
+    "return_type": "double",
+    "argument_types": "double, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to given number of decimal places"
+  },
+  {
+    "function": "round",
+    "return_type": "integer",
+    "argument_types": "integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to nearest integer"
+  },
+  {
+    "function": "round",
+    "return_type": "integer",
+    "argument_types": "integer, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to nearest integer"
+  },
+  {
+    "function": "round",
+    "return_type": "real",
+    "argument_types": "real",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to given number of decimal places"
+  },
+  {
+    "function": "round",
+    "return_type": "real",
+    "argument_types": "real, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to given number of decimal places"
+  },
+  {
+    "function": "round",
+    "return_type": "smallint",
+    "argument_types": "smallint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to nearest integer"
+  },
+  {
+    "function": "round",
+    "return_type": "smallint",
+    "argument_types": "smallint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to nearest integer"
+  },
+  {
+    "function": "round",
+    "return_type": "tinyint",
+    "argument_types": "tinyint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to nearest integer"
+  },
+  {
+    "function": "round",
+    "return_type": "tinyint",
+    "argument_types": "tinyint, integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to nearest integer"
+  },
+  {
+    "function": "row_number",
+    "return_type": "bigint",
+    "argument_types": "",
+    "function_type": "window",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "rpad",
+    "return_type": "varbinary",
+    "argument_types": "varbinary, bigint, varbinary",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Pads a varbinary on the right"
+  },
+  {
+    "function": "rpad",
+    "return_type": "varchar",
+    "argument_types": "varchar(x), bigint, varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Pads a string on the right"
+  },
+  {
+    "function": "rtrim",
+    "return_type": "varchar(x)",
+    "argument_types": "char(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Removes whitespace from the end of a string"
+  },
+  {
+    "function": "rtrim",
+    "return_type": "varchar(x)",
+    "argument_types": "char(x), codepoints",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remove the longest string containing only given characters from the end of a string"
+  },
+  {
+    "function": "rtrim",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Removes whitespace from the end of a string"
+  },
+  {
+    "function": "rtrim",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), codepoints",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remove the longest string containing only given characters from the end of a string"
+  },
+  {
+    "function": "second",
+    "return_type": "bigint",
+    "argument_types": "interval day to second",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Second of the minute of the given interval"
+  },
+  {
+    "function": "second",
+    "return_type": "bigint",
+    "argument_types": "time(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Second of the minute of the given time"
+  },
+  {
+    "function": "second",
+    "return_type": "bigint",
+    "argument_types": "time(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Second of the minute of the given time"
+  },
+  {
+    "function": "second",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Second of the minute of the given timestamp"
+  },
+  {
+    "function": "second",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Second of the minute of the given timestamp"
+  },
+  {
+    "function": "sequence",
+    "return_type": "array(bigint)",
+    "argument_types": "bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "sequence",
+    "return_type": "array(bigint)",
+    "argument_types": "bigint, bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Sequence function to generate synthetic arrays"
+  },
+  {
+    "function": "sequence",
+    "return_type": "array(date)",
+    "argument_types": "date, date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "sequence",
+    "return_type": "array(date)",
+    "argument_types": "date, date, interval day to second",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "sequence",
+    "return_type": "array(date)",
+    "argument_types": "date, date, interval year to month",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "sequence",
+    "return_type": "array(timestamp(p))",
+    "argument_types": "timestamp(p), timestamp(p), interval day to second",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "sequence",
+    "return_type": "array(timestamp(p))",
+    "argument_types": "timestamp(p), timestamp(p), interval year to month",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "shuffle",
+    "return_type": "array(e)",
+    "argument_types": "array(e)",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "Generates a random permutation of the given array."
+  },
+  {
+    "function": "sign",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "sign",
+    "return_type": "decimal(1,0)",
+    "argument_types": "decimal(p,s)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Signum"
+  },
+  {
+    "function": "sign",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Signum"
+  },
+  {
+    "function": "sign",
+    "return_type": "integer",
+    "argument_types": "integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Signum"
+  },
+  {
+    "function": "sign",
+    "return_type": "real",
+    "argument_types": "real",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Signum"
+  },
+  {
+    "function": "sign",
+    "return_type": "smallint",
+    "argument_types": "smallint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Signum"
+  },
+  {
+    "function": "sign",
+    "return_type": "tinyint",
+    "argument_types": "tinyint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Signum"
+  },
+  {
+    "function": "sin",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Sine"
+  },
+  {
+    "function": "skewness",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the skewness of the argument"
+  },
+  {
+    "function": "skewness",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the skewness of the argument"
+  },
+  {
+    "function": "slice",
+    "return_type": "array(e)",
+    "argument_types": "array(e), bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Subsets an array given an offset (1-indexed) and length"
+  },
+  {
+    "function": "split",
+    "return_type": "array(varchar(x))",
+    "argument_types": "varchar(x), varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "split",
+    "return_type": "array(varchar(x))",
+    "argument_types": "varchar(x), varchar(y), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "split_part",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), varchar(y), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Splits a string by a delimiter and returns the specified field (counting from one)"
+  },
+  {
+    "function": "split_to_map",
+    "return_type": "map(varchar,varchar)",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Creates a map using entryDelimiter and keyValueDelimiter"
+  },
+  {
+    "function": "split_to_multimap",
+    "return_type": "map(varchar,array(varchar))",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Creates a multimap by splitting a string into key/value pairs"
+  },
+  {
+    "function": "sqrt",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Square root"
+  },
+  {
+    "function": "starts_with",
+    "return_type": "boolean",
+    "argument_types": "varchar(x), varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Determine whether source starts with prefix or not"
+  },
+  {
+    "function": "stddev",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the sample standard deviation of the argument"
+  },
+  {
+    "function": "stddev",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the sample standard deviation of the argument"
+  },
+  {
+    "function": "stddev_pop",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the population standard deviation of the argument"
+  },
+  {
+    "function": "stddev_pop",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the population standard deviation of the argument"
+  },
+  {
+    "function": "stddev_samp",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the sample standard deviation of the argument"
+  },
+  {
+    "function": "stddev_samp",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the sample standard deviation of the argument"
+  },
+  {
+    "function": "strpos",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), varchar(y)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns index of first occurrence of a substring (or 0 if not found)"
+  },
+  {
+    "function": "strpos",
+    "return_type": "bigint",
+    "argument_types": "varchar(x), varchar(y), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Returns index of n-th occurrence of a substring (or 0 if not found)"
+  },
+  {
+    "function": "substr",
+    "return_type": "varbinary",
+    "argument_types": "varbinary, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Suffix starting at given index"
+  },
+  {
+    "function": "substr",
+    "return_type": "varbinary",
+    "argument_types": "varbinary, bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Substring of given length starting at an index"
+  },
+  {
+    "function": "substr",
+    "return_type": "varchar(x)",
+    "argument_types": "char(x), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Suffix starting at given index"
+  },
+  {
+    "function": "substr",
+    "return_type": "varchar(x)",
+    "argument_types": "char(x), bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Substring of given length starting at an index"
+  },
+  {
+    "function": "substr",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Suffix starting at given index"
+  },
+  {
+    "function": "substr",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Substring of given length starting at an index"
+  },
+  {
+    "function": "substring",
+    "return_type": "varchar(x)",
+    "argument_types": "char(x), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Suffix starting at given index"
+  },
+  {
+    "function": "substring",
+    "return_type": "varchar(x)",
+    "argument_types": "char(x), bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Substring of given length starting at an index"
+  },
+  {
+    "function": "substring",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Suffix starting at given index"
+  },
+  {
+    "function": "substring",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Substring of given length starting at an index"
+  },
+  {
+    "function": "sum",
+    "return_type": "bigint",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "sum",
+    "return_type": "decimal(38,s)",
+    "argument_types": "decimal(p,s)",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Calculates the sum over the input values"
+  },
+  {
+    "function": "sum",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "sum",
+    "return_type": "interval day to second",
+    "argument_types": "interval day to second",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "sum",
+    "return_type": "interval year to month",
+    "argument_types": "interval year to month",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "sum",
+    "return_type": "real",
+    "argument_types": "real",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "tan",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Tangent"
+  },
+  {
+    "function": "tanh",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Hyperbolic tangent"
+  },
+  {
+    "function": "timestamp_objectid",
+    "return_type": "objectid",
+    "argument_types": "timestamp(0) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Mongodb ObjectId from the given timestamp"
+  },
+  {
+    "function": "timezone_hour",
+    "return_type": "bigint",
+    "argument_types": "time(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Time zone hour of the given time"
+  },
+  {
+    "function": "timezone_hour",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Time zone hour of the given timestamp"
+  },
+  {
+    "function": "timezone_minute",
+    "return_type": "bigint",
+    "argument_types": "time(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Time zone minute of the given time"
+  },
+  {
+    "function": "timezone_minute",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Time zone minute of the given timestamp"
+  },
+  {
+    "function": "to_base",
+    "return_type": "varchar(64)",
+    "argument_types": "bigint, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Convert a number to a string in the given base"
+  },
+  {
+    "function": "to_hex",
+    "return_type": "varchar",
+    "argument_types": "varbinary",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Encode binary data as hex"
+  },
+  {
+    "function": "to_iso8601",
+    "return_type": "varchar(16)",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "to_iso8601",
+    "return_type": "varchar(n)",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "to_iso8601",
+    "return_type": "varchar(n)",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "to_milliseconds",
+    "return_type": "bigint",
+    "argument_types": "interval day to second",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "to_unixtime",
+    "return_type": "double",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "to_utf8",
+    "return_type": "varbinary",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Encodes the string to UTF-8"
+  },
+  {
+    "function": "transform",
+    "return_type": "array(U)",
+    "argument_types": "array(T), function(T,U)",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "Apply lambda to each element of the array"
+  },
+  {
+    "function": "transform_keys",
+    "return_type": "map(K2,V)",
+    "argument_types": "map(K1,V), function(K1,V,K2)",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "Apply lambda to each entry of the map and transform the key"
+  },
+  {
+    "function": "transform_values",
+    "return_type": "map(K,V2)",
+    "argument_types": "map(K,V1), function(K,V1,V2)",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "Apply lambda to each entry of the map and transform the value"
+  },
+  {
+    "function": "translate",
+    "return_type": "varchar",
+    "argument_types": "varchar(x), varchar(y), varchar(z)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Translate characters from the source string based on original and translations strings"
+  },
+  {
+    "function": "trim",
+    "return_type": "varchar(x)",
+    "argument_types": "char(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Removes whitespace from the beginning and end of a string"
+  },
+  {
+    "function": "trim",
+    "return_type": "varchar(x)",
+    "argument_types": "char(x), codepoints",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remove the longest string containing only given characters from the beginning and end of a string"
+  },
+  {
+    "function": "trim",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Removes whitespace from the beginning and end of a string"
+  },
+  {
+    "function": "trim",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x), codepoints",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remove the longest string containing only given characters from the beginning and end of a string"
+  },
+  {
+    "function": "trim_array",
+    "return_type": "array(e)",
+    "argument_types": "array(e), bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Remove elements from the end of array"
+  },
+  {
+    "function": "truncate",
+    "return_type": "decimal(p,s)",
+    "argument_types": "decimal(p,s), integer",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to integer by dropping given number of digits after decimal point"
+  },
+  {
+    "function": "truncate",
+    "return_type": "decimal(rp,0)",
+    "argument_types": "decimal(p,s)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to integer by dropping digits after decimal point"
+  },
+  {
+    "function": "truncate",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to integer by dropping digits after decimal point"
+  },
+  {
+    "function": "truncate",
+    "return_type": "real",
+    "argument_types": "real",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Round to integer by dropping digits after decimal point"
+  },
+  {
+    "function": "typeof",
+    "return_type": "varchar",
+    "argument_types": "t",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Textual representation of expression type"
+  },
+  {
+    "function": "upper",
+    "return_type": "char(x)",
+    "argument_types": "char(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Converts the string to upper case"
+  },
+  {
+    "function": "upper",
+    "return_type": "varchar(x)",
+    "argument_types": "varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Converts the string to upper case"
+  },
+  {
+    "function": "value_at_quantile",
+    "return_type": "bigint",
+    "argument_types": "qdigest(bigint), double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Given an input q between [0, 1], find the value whose rank in the sorted sequence of the n values represented by the qdigest is qn."
+  },
+  {
+    "function": "value_at_quantile",
+    "return_type": "double",
+    "argument_types": "qdigest(double), double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Given an input q between [0, 1], find the value whose rank in the sorted sequence of the n values represented by the qdigest is qn."
+  },
+  {
+    "function": "value_at_quantile",
+    "return_type": "double",
+    "argument_types": "tdigest, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Given an input q between [0, 1], find the value whose rank in the sorted sequence of the n values represented by the tdigest is qn."
+  },
+  {
+    "function": "value_at_quantile",
+    "return_type": "real",
+    "argument_types": "qdigest(real), double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Given an input q between [0, 1], find the value whose rank in the sorted sequence of the n values represented by the qdigest is qn."
+  },
+  {
+    "function": "values_at_quantiles",
+    "return_type": "array(bigint)",
+    "argument_types": "qdigest(bigint), array(double)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "For each input q between [0, 1], find the value whose rank in the sorted sequence of the n values represented by the qdigest is qn."
+  },
+  {
+    "function": "values_at_quantiles",
+    "return_type": "array(double)",
+    "argument_types": "qdigest(double), array(double)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "For each input q between [0, 1], find the value whose rank in the sorted sequence of the n values represented by the qdigest is qn."
+  },
+  {
+    "function": "values_at_quantiles",
+    "return_type": "array(double)",
+    "argument_types": "tdigest, array(double)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "For each input q between [0, 1], find the value whose rank in the sorted sequence of the n values represented by the tdigest is qn."
+  },
+  {
+    "function": "values_at_quantiles",
+    "return_type": "array(real)",
+    "argument_types": "qdigest(real), array(double)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "For each input q between [0, 1], find the value whose rank in the sorted sequence of the n values represented by the qdigest is qn."
+  },
+  {
+    "function": "var_pop",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the population variance of the argument"
+  },
+  {
+    "function": "var_pop",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the population variance of the argument"
+  },
+  {
+    "function": "var_samp",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the sample variance of the argument"
+  },
+  {
+    "function": "var_samp",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the sample variance of the argument"
+  },
+  {
+    "function": "variance",
+    "return_type": "double",
+    "argument_types": "bigint",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the sample variance of the argument"
+  },
+  {
+    "function": "variance",
+    "return_type": "double",
+    "argument_types": "double",
+    "function_type": "aggregate",
+    "deterministic": true,
+    "description": "Returns the sample variance of the argument"
+  },
+  {
+    "function": "week",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Week of the year of the given date"
+  },
+  {
+    "function": "week",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Week of the year of the given timestamp"
+  },
+  {
+    "function": "week",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Week of the year of the given timestamp"
+  },
+  {
+    "function": "week_of_year",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Week of the year of the given date"
+  },
+  {
+    "function": "week_of_year",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Week of the year of the given timestamp"
+  },
+  {
+    "function": "week_of_year",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Week of the year of the given timestamp"
+  },
+  {
+    "function": "width_bucket",
+    "return_type": "bigint",
+    "argument_types": "double, array(double)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "The bucket number of a value given an array of bins"
+  },
+  {
+    "function": "width_bucket",
+    "return_type": "bigint",
+    "argument_types": "double, double, double, bigint",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "The bucket number of a value given a lower and upper bound and the number of buckets"
+  },
+  {
+    "function": "wilson_interval_lower",
+    "return_type": "double",
+    "argument_types": "bigint, bigint, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Binomial confidence interval lower bound using Wilson score"
+  },
+  {
+    "function": "wilson_interval_upper",
+    "return_type": "double",
+    "argument_types": "bigint, bigint, double",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Binomial confidence interval upper bound using Wilson score"
+  },
+  {
+    "function": "with_timezone",
+    "return_type": "timestamp(p) with time zone",
+    "argument_types": "timestamp(p), varchar(x)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": ""
+  },
+  {
+    "function": "year",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Year of the given date"
+  },
+  {
+    "function": "year",
+    "return_type": "bigint",
+    "argument_types": "interval year to month",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Year of the given interval"
+  },
+  {
+    "function": "year",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Year of the given timestamp"
+  },
+  {
+    "function": "year",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Year of the given timestamp"
+  },
+  {
+    "function": "year_of_week",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Year of the ISO week of the given date"
+  },
+  {
+    "function": "year_of_week",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Year of the ISO week of the given timestamp"
+  },
+  {
+    "function": "year_of_week",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Year of the ISO week of the given timestamp"
+  },
+  {
+    "function": "yow",
+    "return_type": "bigint",
+    "argument_types": "date",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Year of the ISO week of the given date"
+  },
+  {
+    "function": "yow",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Year of the ISO week of the given timestamp"
+  },
+  {
+    "function": "yow",
+    "return_type": "bigint",
+    "argument_types": "timestamp(p) with time zone",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Year of the ISO week of the given timestamp"
+  },
+  {
+    "function": "zip",
+    "return_type": "array(row(T1,T2))",
+    "argument_types": "array(T1), array(T2)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Merges the given arrays, element-wise, into a single array of rows."
+  },
+  {
+    "function": "zip",
+    "return_type": "array(row(T1,T2,T3))",
+    "argument_types": "array(T1), array(T2), array(T3)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Merges the given arrays, element-wise, into a single array of rows."
+  },
+  {
+    "function": "zip",
+    "return_type": "array(row(T1,T2,T3,T4))",
+    "argument_types": "array(T1), array(T2), array(T3), array(T4)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Merges the given arrays, element-wise, into a single array of rows."
+  },
+  {
+    "function": "zip",
+    "return_type": "array(row(T1,T2,T3,T4,T5))",
+    "argument_types": "array(T1), array(T2), array(T3), array(T4), array(T5)",
+    "function_type": "scalar",
+    "deterministic": true,
+    "description": "Merges the given arrays, element-wise, into a single array of rows."
+  },
+  {
+    "function": "zip_with",
+    "return_type": "array(R)",
+    "argument_types": "array(T), array(U), function(T,U,R)",
+    "function_type": "scalar",
+    "deterministic": false,
+    "description": "Merge two arrays, element-wise, into a single array using the lambda function"
+  },
+  {
+    "function": "hq_index",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "行情指标计算: hq_index(domain, field, cond). 获取技术指标值(MA/MACD/KDJ/RSI/BOLL等). 返回3列: stkcode, hq_date, 指标值. 必须通过table()包装使用并指定列别名."
+  },
+  {
+    "function": "hq_index_ss",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "技术形态选股: hq_index_ss(domain, field, signal, cond). 识别金叉/死叉/上移/下移/走平等技术形态. 返回2列: stkcode, hq_date. 必须通过table()包装使用."
+  },
+  {
+    "function": "hq_calc_ss",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar, varchar, varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "指标比较选股: hq_calc_ss(domain, signal, signalCond, index1, cond1, index2, cond2). 判断两个指标间的上穿/下穿关系(如5日均线上穿10日均线). 返回2列: stkcode, hq_date. 必须通过table()包装使用."
+  },
+  {
+    "function": "hq_value",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "行情取值函数: hq_value(domain, field, cond). 获取行情数据的具体取值. 使用频率排名#23(93次). 必须通过table()包装使用."
+  },
+  {
+    "function": "interval_index",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "区间指标计算: interval_index(domain, indexName, cond). 提供150+预定义区间统计指标(如区间最大连续涨停天数/区间资金流向/区间换手率等). 返回3列: stkcode, agg_date, 指标值. 必须通过table()包装使用."
+  },
+  {
+    "function": "record_high",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "历史新高判断: RECORD_HIGH(table, field, op_cond, calc_cond). 判断股票是否在指定时间点创出指定观察周期内的新高. 返回1列: 股票代码. 必须通过table()包装使用."
+  },
+  {
+    "function": "record_low",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "历史新低判断: RECORD_LOW(table, field, op_cond, calc_cond). 判断股票是否在指定时间点创出指定观察周期内的新低. 返回1列: 股票代码. 必须通过table()包装使用."
+  },
+  {
+    "function": "interval_value",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "区间增长值: INTERVAL_VALUE(table, field, cond). 计算期末值-期初值的绝对增长量. 返回2列: 股票代码, calc_value. 必须通过table()包装使用. 表名和字段名使用中文."
+  },
+  {
+    "function": "interval_rate",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "区间增长率: INTERVAL_RATE(table, field, cond). 计算(期末值-期初值)/期初值. 返回2列: 股票代码, calc_value(小数形式, 0.5=50%). 必须通过table()包装使用. 表名和字段名使用中文."
+  },
+  {
+    "function": "yoy_value",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "同比增长值: YOY_VALUE(table, field, cond). 计算当期值-去年同期值. 返回2列: 股票代码, calc_value. 适用于财务数据年度对比. 必须通过table()包装使用."
+  },
+  {
+    "function": "yoy_rate",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "同比增长率: YOY_RATE(table, field, cond). 计算(当期值-去年同期值)/去年同期值. 返回2列: 股票代码, calc_value(小数形式). 必须通过table()包装使用."
+  },
+  {
+    "function": "qoq_value",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "环比增长值: QOQ_VALUE(table, field, cond). 计算当期值-上期值. 返回2列: 股票代码, calc_value. 适用于财务数据季度对比. 必须通过table()包装使用."
+  },
+  {
+    "function": "qoq_rate",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "环比增长率: QOQ_RATE(table, field, cond). 计算(当期值-上期值)/上期值. 返回2列: 股票代码, calc_value(小数形式). 必须通过table()包装使用."
+  },
+  {
+    "function": "cincv",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "复合增长值: CINCV(table, field, cond). 计算多期复合增长的绝对值. 返回2列: 股票代码, calc_value. 注意: 此函数用法尚未经过生产验证."
+  },
+  {
+    "function": "cincr",
+    "return_type": "table",
+    "argument_types": "varchar, varchar, varchar",
+    "function_type": "table",
+    "deterministic": true,
+    "description": "复合增长率(CAGR): CINCR(table, field, cond). 计算Compound Annual Growth Rate = (期末值/期初值)^(1/年数)-1. 返回2列: 股票代码, calc_value(小数形式). 注意: 此函数用法尚未经过生产验证."
+  }
+]
