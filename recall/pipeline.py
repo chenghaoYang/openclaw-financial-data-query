@@ -496,7 +496,6 @@ class RecallPipeline:
                 router_output=router_output,
                 norm_info=norm_info,
                 bm25_query=bm25_query,
-                vector_query=vector_query,
                 retrieval_top_k=retrieval_top_k,
             )
             federated_all_hits: List[Dict[str, Any]] = []
@@ -1511,6 +1510,9 @@ class RecallPipeline:
           Tier 2 (same market):  same market, different table            → same_market_factor (default 1.0x)
           Tier 3 (cross market): different market entirely               → cross_market_penalty (default 0.5x)
 
+        For multi-intent queries (is_multi_intent=True), cross-market penalty is
+        disabled since multiple markets are expected (e.g., "A股和美股对比").
+
         This replaces hard filtering with preference signals, ensuring that even if the
         router misroutes, semantically correct candidates can still surface via their
         raw retrieval score.
@@ -1549,10 +1551,21 @@ class RecallPipeline:
                 self._expand_yaml_paths_for_filter(router_output.allowed_yaml_paths)
             )
 
-        # Determine router market(s)
-        router_market = normalize_market_tag(
-            norm_info.get("market") or router_output.market
-        )
+        # Determine router market(s) for cross-market penalty.
+        # For multi-intent queries, collect ALL expected markets to avoid
+        # penalizing the "other" market in a comparison query.
+        router_markets: set = set()
+        if router_output.is_multi_intent and router_output.markets:
+            for m in router_output.markets:
+                nm = normalize_market_tag(m)
+                if nm:
+                    router_markets.add(nm)
+        else:
+            single_market = normalize_market_tag(
+                norm_info.get("market") or router_output.market
+            )
+            if single_market:
+                router_markets.add(single_market)
 
         counts = {"aligned": 0, "same_market": 0, "cross_market": 0}
         for c in candidates:
@@ -1572,19 +1585,19 @@ class RecallPipeline:
             if is_aligned:
                 factor = effective_boost
                 counts["aligned"] += 1
-            elif not router_market:
+            elif not router_markets:
                 # No market info → no penalty
                 continue
             else:
                 c_market = normalize_market_tag(c.get("market"))
-                if not c_market or c_market == router_market:
+                if not c_market or c_market in router_markets:
                     factor = effective_same
                     counts["same_market"] += 1
                 else:
                     factor = effective_penalty
                     counts["cross_market"] += 1
 
-            if factor == 1.0:
+            if abs(factor - 1.0) < 1e-9:
                 continue
             for score_key in ("rrf_score", "linear_score", "distance"):
                 if c.get(score_key) is not None:
@@ -1593,10 +1606,11 @@ class RecallPipeline:
 
         if any(v > 0 for v in counts.values()):
             logger.info(
-                "Soft boosting (confidence=%.2f, t=%.2f): "
+                "Soft boosting (confidence=%.2f, t=%.2f, multi_intent=%s): "
                 "aligned=%d (×%.2f), same_market=%d (×%.2f), cross_market=%d (×%.2f)",
                 router_output.confidence,
                 t,
+                router_output.is_multi_intent,
                 counts["aligned"],
                 effective_boost,
                 counts["same_market"],
@@ -1612,7 +1626,6 @@ class RecallPipeline:
         router_output: RouterOutput,
         norm_info: Dict[str, Any],
         bm25_query: str,
-        vector_query: str,
         retrieval_top_k: int,
     ) -> Optional[Dict[str, List[Dict[str, Any]]]]:
         """Federated search for multi-intent queries: run parallel per-market retrieval.
@@ -1632,7 +1645,14 @@ class RecallPipeline:
         if not router_output.is_multi_intent:
             return None
 
-        markets = list(router_output.markets) if router_output.markets else []
+        # Deduplicate markets (preserve order) to avoid redundant parallel searches
+        seen_markets: set = set()
+        markets: List[str] = []
+        for m in (router_output.markets or ()):
+            nm = normalize_market_tag(m) or m
+            if nm and nm not in seen_markets:
+                seen_markets.add(nm)
+                markets.append(nm)
         if len(markets) < 2:
             return None
 
