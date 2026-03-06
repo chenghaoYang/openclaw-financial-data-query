@@ -220,18 +220,19 @@ class RecallPipeline:
             if normalized_info is not None:
                 norm_info = normalized_info
                 normalized_query = norm_info.get("normalized_query", query)
-                retrieval_query = self._build_retrieval_query(query, norm_info)
+                bm25_query, vector_query = self._build_retrieval_queries(query, norm_info)
                 logger.info(f"Using agent-provided normalization: {normalized_query}")
             else:
                 # Fallback: use query as-is (no LLM normalization)
                 norm_info = {"normalized_query": query, "original_query": query, "core_indicator": "", "keywords": [], "market": "", "time_range": ""}
                 normalized_query = query
-                retrieval_query = query
+                bm25_query = query
+                vector_query = query
                 logger.info(f"No normalization provided, using raw query: {query}")
 
-            if retrieval_query != normalized_query:
+            if bm25_query != normalized_query or vector_query != normalized_query:
                 logger.debug(
-                    f"Retrieval query adjusted: '{normalized_query}' -> '{retrieval_query}'"
+                    f"Decoupled retrieval queries: bm25='{bm25_query}', vector='{vector_query}'"
                 )
 
             # Step 2: Domain routing (ensemble: rule-based + LLM)
@@ -283,17 +284,23 @@ class RecallPipeline:
                     f"confidence={router_output.confidence:.2f}"
                 )
 
-            retrieval_query_with_expansions = self._append_router_expansions(
-                retrieval_query,
+            bm25_query_expanded = self._append_router_expansions(
+                bm25_query,
                 router_output.query_expansions,
             )
-            if retrieval_query_with_expansions != retrieval_query:
+            vector_query_expanded = self._append_router_expansions(
+                vector_query,
+                router_output.query_expansions,
+            )
+            if bm25_query_expanded != bm25_query or vector_query_expanded != vector_query:
                 logger.debug(
-                    "Retrieval query expanded with router terms: '%s' -> '%s'",
-                    retrieval_query,
-                    retrieval_query_with_expansions,
+                    "Retrieval queries expanded with router terms: "
+                    "bm25='%s'->'%s', vector='%s'->'%s'",
+                    bm25_query, bm25_query_expanded,
+                    vector_query, vector_query_expanded,
                 )
-            retrieval_query = retrieval_query_with_expansions
+            bm25_query = bm25_query_expanded
+            vector_query = vector_query_expanded
 
             # Step 3: 多路召回（并行执行）
             logger.info("Step 3: Multi-path retrieval (parallel)...")
@@ -351,7 +358,7 @@ class RecallPipeline:
                 if self.vector_retriever is None:
                     return []
                 return await self.vector_retriever.search(
-                    query_text=retrieval_query,
+                    query_text=vector_query,
                     top_k=retrieval_top_k,
                     doc_type="column",
                 )
@@ -360,7 +367,7 @@ class RecallPipeline:
                 if not scoped_enabled:
                     return None
                 return await self.vector_retriever.search(
-                    query_text=retrieval_query,
+                    query_text=vector_query,
                     top_k=retrieval_top_k,
                     doc_type="column",
                     yaml_paths=scoped_yaml_paths or None,
@@ -372,7 +379,7 @@ class RecallPipeline:
                 if not self.enable_two_stage or self.vector_retriever is None:
                     return None
                 return await self._two_stage_retrieval(
-                    query_text=retrieval_query,
+                    query_text=vector_query,
                     router_output=router_output,
                     max_candidates=retrieval_top_k,
                 )
@@ -408,7 +415,7 @@ class RecallPipeline:
                 def _run_bm25() -> List[Dict[str, Any]]:
                     """BM25 检索（soft-routing market 过滤 → global 回退）。"""
                     hits = self._bm25_search(
-                        retrieval_query,
+                        bm25_query,
                         retrieval_top_k,
                         market=bm25_market_filter,
                     )
@@ -417,7 +424,7 @@ class RecallPipeline:
                     # market 过滤无结果时回退到全局搜索
                     if bm25_market_filter is not None:
                         hits = self._bm25_search(
-                            retrieval_query,
+                            bm25_query,
                             retrieval_top_k,
                         )
                         if hits:
@@ -1215,12 +1222,24 @@ class RecallPipeline:
             )
         return pruned_hits
 
-    def _build_retrieval_query(
+    def _build_retrieval_queries(
         self,
         original_query: str,
         norm_info: Dict[str, Any],
-    ) -> str:
-        """根据 query_rewrite 配置构建用于 embedding 的检索查询。"""
+    ) -> Tuple[str, str]:
+        """构建解耦的 BM25 和 Vector 检索查询。
+
+        BM25 和 Dense Vector 对文本的偏好相反：
+        - BM25：喜欢干净的关键词集合，去掉停用词和废话。
+        - Vector (BGE)：喜欢连贯的自然语言描述，厌恶硬接的数学符号（如 >10）。
+
+        因此为两路检索分别生成最优查询：
+        - bm25_query: normalized_query + keywords + hypothetical_fields（纯关键词堆叠）
+        - vector_query: [市场域前缀] + normalized_query + 字段名（连贯语义，无算术符号）
+
+        Returns:
+            (bm25_query, vector_query)
+        """
         normalized_query = str(norm_info.get("normalized_query") or "").strip()
         if not normalized_query:
             normalized_query = original_query
@@ -1228,78 +1247,129 @@ class RecallPipeline:
         cfg = self._rewrite_cfg
         mode = cfg.retrieval_query_mode
         if mode == "original":
-            return original_query
+            return original_query, original_query
         if mode != "hybrid":
-            return normalized_query
+            return normalized_query, normalized_query
 
-        parts: List[str] = []
-        seen = set()
+        max_length = max(1, int(getattr(cfg, "retrieval_query_max_length", 256)))
 
-        def _append(part: Any) -> bool:
-            token = str(part or "").strip()
-            if not token or token in seen:
-                return False
-            seen.add(token)
-            parts.append(token)
-            return True
-
-        _append(normalized_query)
-
+        # --- Shared: extract keywords ---
         max_keywords = max(1, int(getattr(cfg, "retrieval_query_max_keywords", 4)))
         raw_keywords = norm_info.get("keywords", [])
         if isinstance(raw_keywords, str):
             raw_keywords = [raw_keywords]
-        keyword_count = 0
+        keywords: List[str] = []
         if isinstance(raw_keywords, (list, tuple)):
             for item in raw_keywords:
-                if keyword_count >= max_keywords:
+                if len(keywords) >= max_keywords:
                     break
                 keyword = str(item or "").strip()
                 if not keyword:
                     continue
                 if keyword in normalized_query:
                     continue
-                if _append(keyword):
-                    keyword_count += 1
+                keywords.append(keyword)
+
+        # --- Shared: extract numerical filter field names ---
+        max_num_filters = max(
+            1,
+            int(getattr(cfg, "retrieval_query_max_numerical_filters", 2)),
+        )
+        numerical_filters = norm_info.get("numerical_filters", [])
+        filter_field_names: List[str] = []
+        if isinstance(numerical_filters, list):
+            for item in numerical_filters:
+                if len(filter_field_names) >= max_num_filters:
+                    break
+                if not isinstance(item, dict):
+                    continue
+                field_name = str(item.get("field") or "").strip()
+                if field_name and field_name not in filter_field_names:
+                    filter_field_names.append(field_name)
+
+        # --- Shared: hypothetical_fields from LLM expansion ---
+        hy_fields_raw = norm_info.get("hypothetical_fields", [])
+        if isinstance(hy_fields_raw, str):
+            hy_fields_raw = [hy_fields_raw]
+        hy_fields: List[str] = []
+        if isinstance(hy_fields_raw, (list, tuple)):
+            for item in hy_fields_raw:
+                f = str(item or "").strip()
+                if f and f not in hy_fields:
+                    hy_fields.append(f)
+
+        # ===== Build BM25 Query (keyword stacking) =====
+        # BM25 benefits from clean keyword tokens: normalized_query + keywords +
+        # hypothetical_fields + filter field names. No operator symbols.
+        bm25_parts: List[str] = []
+        bm25_seen: set = set()
+
+        def _bm25_append(part: Any) -> bool:
+            token = str(part or "").strip()
+            if not token or token in bm25_seen:
+                return False
+            bm25_seen.add(token)
+            bm25_parts.append(token)
+            return True
+
+        _bm25_append(normalized_query)
+        for kw in keywords:
+            _bm25_append(kw)
+        for hf in hy_fields:
+            _bm25_append(hf)
+        if bool(getattr(cfg, "retrieval_query_include_numerical_filters", True)):
+            for fn in filter_field_names:
+                _bm25_append(fn)
+        if bool(getattr(cfg, "retrieval_query_include_time_range", True)):
+            _bm25_append(norm_info.get("time_range"))
+
+        bm25_query = self._truncate_query_parts(bm25_parts, max_length) or normalized_query
+
+        # ===== Build Vector Query (coherent natural language) =====
+        # Vector (BGE) benefits from fluent text. Add domain soft-prompting prefix
+        # and field names (without operator/value) to boost attention on relevant fields.
+        vector_parts: List[str] = []
+        vector_seen: set = set()
+
+        def _vector_append(part: Any) -> bool:
+            token = str(part or "").strip()
+            if not token or token in vector_seen:
+                return False
+            vector_seen.add(token)
+            vector_parts.append(token)
+            return True
+
+        # Domain soft-prompting: prepend market tag as BGE is sensitive to domain prefixes
+        market = str(norm_info.get("market") or "").strip()
+        if market:
+            _vector_append(f"[{market}]")
+
+        _vector_append(normalized_query)
+
+        for kw in keywords:
+            _vector_append(kw)
+
+        # Only append field names (no operator symbols like >10 that pollute semantic space)
+        if bool(getattr(cfg, "retrieval_query_include_numerical_filters", True)):
+            for fn in filter_field_names:
+                _vector_append(fn)
 
         if bool(getattr(cfg, "retrieval_query_include_time_range", True)):
-            _append(norm_info.get("time_range"))
-
-        if bool(getattr(cfg, "retrieval_query_include_numerical_filters", True)):
-            max_num_filters = max(
-                1,
-                int(
-                getattr(cfg, "retrieval_query_max_numerical_filters", 2)
-                ),
-            )
-            numerical_filters = norm_info.get("numerical_filters", [])
-            if isinstance(numerical_filters, list):
-                appended_filters = 0
-                for item in numerical_filters:
-                    if appended_filters >= max_num_filters:
-                        break
-                    if not isinstance(item, dict):
-                        continue
-                    field = str(item.get("field") or "").strip()
-                    op = str(item.get("operator") or "").strip()
-                    value = item.get("value")
-                    if not field or not op or value is None:
-                        continue
-                    unit = str(item.get("unit") or "").strip()
-                    value_text = str(value).strip()
-                    if not value_text:
-                        continue
-                    if _append(f"{field}{op}{value_text}{unit}"):
-                        appended_filters += 1
+            _vector_append(norm_info.get("time_range"))
 
         if bool(getattr(cfg, "retrieval_query_append_original", False)):
-            _append(original_query)
+            _vector_append(original_query)
 
+        vector_query = self._truncate_query_parts(vector_parts, max_length) or normalized_query
+
+        return bm25_query, vector_query
+
+    @staticmethod
+    def _truncate_query_parts(parts: List[str], max_length: int) -> str:
+        """Join parts with space, truncating to max_length at part boundaries."""
         if not parts:
-            return normalized_query
-
+            return ""
         query_text = " ".join(parts)
-        max_length = max(1, int(getattr(cfg, "retrieval_query_max_length", 256)))
         if len(query_text) <= max_length:
             return query_text
 
