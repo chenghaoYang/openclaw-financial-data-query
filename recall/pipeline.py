@@ -23,6 +23,7 @@ from .providers.bge_search import BgeSearchClient
 from .utils.domain_router import DomainRouter, RouterOutput
 from .utils.market_taxonomy import (
     expand_market_for_soft_routing,
+    market_filter_values,
     normalize_frequency_tag,
     normalize_market_tag,
 )
@@ -220,18 +221,19 @@ class RecallPipeline:
             if normalized_info is not None:
                 norm_info = normalized_info
                 normalized_query = norm_info.get("normalized_query", query)
-                retrieval_query = self._build_retrieval_query(query, norm_info)
+                bm25_query, vector_query = self._build_retrieval_queries(query, norm_info)
                 logger.info(f"Using agent-provided normalization: {normalized_query}")
             else:
                 # Fallback: use query as-is (no LLM normalization)
                 norm_info = {"normalized_query": query, "original_query": query, "core_indicator": "", "keywords": [], "market": "", "time_range": ""}
                 normalized_query = query
-                retrieval_query = query
+                bm25_query = query
+                vector_query = query
                 logger.info(f"No normalization provided, using raw query: {query}")
 
-            if retrieval_query != normalized_query:
+            if bm25_query != normalized_query or vector_query != normalized_query:
                 logger.debug(
-                    f"Retrieval query adjusted: '{normalized_query}' -> '{retrieval_query}'"
+                    f"Decoupled retrieval queries: bm25='{bm25_query}', vector='{vector_query}'"
                 )
 
             # Step 2: Domain routing (ensemble: rule-based + LLM)
@@ -283,17 +285,23 @@ class RecallPipeline:
                     f"confidence={router_output.confidence:.2f}"
                 )
 
-            retrieval_query_with_expansions = self._append_router_expansions(
-                retrieval_query,
+            bm25_query_expanded = self._append_router_expansions(
+                bm25_query,
                 router_output.query_expansions,
             )
-            if retrieval_query_with_expansions != retrieval_query:
+            vector_query_expanded = self._append_router_expansions(
+                vector_query,
+                router_output.query_expansions,
+            )
+            if bm25_query_expanded != bm25_query or vector_query_expanded != vector_query:
                 logger.debug(
-                    "Retrieval query expanded with router terms: '%s' -> '%s'",
-                    retrieval_query,
-                    retrieval_query_with_expansions,
+                    "Retrieval queries expanded with router terms: "
+                    "bm25='%s'->'%s', vector='%s'->'%s'",
+                    bm25_query, bm25_query_expanded,
+                    vector_query, vector_query_expanded,
                 )
-            retrieval_query = retrieval_query_with_expansions
+            bm25_query = bm25_query_expanded
+            vector_query = vector_query_expanded
 
             # Step 3: 多路召回（并行执行）
             logger.info("Step 3: Multi-path retrieval (parallel)...")
@@ -351,7 +359,7 @@ class RecallPipeline:
                 if self.vector_retriever is None:
                     return []
                 return await self.vector_retriever.search(
-                    query_text=retrieval_query,
+                    query_text=vector_query,
                     top_k=retrieval_top_k,
                     doc_type="column",
                 )
@@ -360,7 +368,7 @@ class RecallPipeline:
                 if not scoped_enabled:
                     return None
                 return await self.vector_retriever.search(
-                    query_text=retrieval_query,
+                    query_text=vector_query,
                     top_k=retrieval_top_k,
                     doc_type="column",
                     yaml_paths=scoped_yaml_paths or None,
@@ -372,7 +380,7 @@ class RecallPipeline:
                 if not self.enable_two_stage or self.vector_retriever is None:
                     return None
                 return await self._two_stage_retrieval(
-                    query_text=retrieval_query,
+                    query_text=vector_query,
                     router_output=router_output,
                     max_candidates=retrieval_top_k,
                 )
@@ -408,7 +416,7 @@ class RecallPipeline:
                 def _run_bm25() -> List[Dict[str, Any]]:
                     """BM25 检索（soft-routing market 过滤 → global 回退）。"""
                     hits = self._bm25_search(
-                        retrieval_query,
+                        bm25_query,
                         retrieval_top_k,
                         market=bm25_market_filter,
                     )
@@ -417,7 +425,7 @@ class RecallPipeline:
                     # market 过滤无结果时回退到全局搜索
                     if bm25_market_filter is not None:
                         hits = self._bm25_search(
-                            retrieval_query,
+                            bm25_query,
                             retrieval_top_k,
                         )
                         if hits:
@@ -483,6 +491,26 @@ class RecallPipeline:
                 candidate_sources["bm25_new"] = new_bm25
                 logger.info(f"    BM25 recall: {len(bm25_hits)} candidates ({new_bm25} new)")
 
+            # Federated search for multi-intent queries (parallel per-market BM25)
+            federated_results = await self._federated_multi_intent_recall(
+                router_output=router_output,
+                norm_info=norm_info,
+                bm25_query=bm25_query,
+                retrieval_top_k=retrieval_top_k,
+            )
+            federated_all_hits: List[Dict[str, Any]] = []
+            if federated_results:
+                for fed_label, fed_hits in federated_results.items():
+                    new_fed = 0
+                    for hit in fed_hits:
+                        doc_id = hit.get("id", "")
+                        if doc_id and doc_id not in all_candidates:
+                            all_candidates[doc_id] = {**hit, "_source": fed_label}
+                            new_fed += 1
+                    federated_all_hits.extend(fed_hits)
+                    candidate_sources[fed_label] = len(fed_hits)
+                    candidate_sources[f"{fed_label}_new"] = new_fed
+
             # Step 4: Hybrid Fusion（RRF / Linear-CC）
             has_vector_hits = any([global_hits, scoped_hits, two_stage_hits])
             if has_vector_hits and bm25_hits and self.bm25_retriever is not None:
@@ -497,6 +525,11 @@ class RecallPipeline:
                     "two_stage": two_stage_hits or [],
                     "bm25": bm25_hits,
                 }
+                # Include federated per-market hits in fusion (treated as BM25 weight)
+                if federated_results:
+                    for fed_label, fed_hits in federated_results.items():
+                        if fed_hits:
+                            ranked_lists[fed_label] = fed_hits
 
                 if fusion_mode == "linear" and multi_list_linear is not None:
                     weights = {
@@ -542,18 +575,26 @@ class RecallPipeline:
                             True,
                         )
                     )
+                    bm25_higher_is_better = bool(
+                        getattr(
+                            self._hybrid_cfg,
+                            "linear_bm25_score_higher_is_better",
+                            True,
+                        )
+                    )
                     score_higher_is_better = {
                         "global": vector_higher_is_better,
                         "scoped": vector_higher_is_better,
                         "two_stage": vector_higher_is_better,
-                        "bm25": bool(
-                            getattr(
-                                self._hybrid_cfg,
-                                "linear_bm25_score_higher_is_better",
-                                True,
-                            )
-                        ),
+                        "bm25": bm25_higher_is_better,
                     }
+                    # Add federated legs to linear fusion (same weight/score as BM25)
+                    if federated_results:
+                        for fed_label in federated_results:
+                            if fed_label in ranked_lists:
+                                weights[fed_label] = weights["bm25"]
+                                score_fields[fed_label] = "bm25_score"
+                                score_higher_is_better[fed_label] = bm25_higher_is_better
                     use_cc = bool(getattr(self._hybrid_cfg, "linear_use_cc", True))
                     candidates = multi_list_linear(
                         scored_lists=ranked_lists,
@@ -587,6 +628,11 @@ class RecallPipeline:
                             "two_stage": w_vector,
                             "bm25": w_bm25,
                         }
+                        # Add federated legs to RRF fusion (same weight as BM25)
+                        if federated_results:
+                            for fed_label in federated_results:
+                                if fed_label in ranked_lists:
+                                    weights[fed_label] = w_bm25
                         candidates = multi_list_rrf(
                             ranked_lists=ranked_lists,
                             weights=weights,
@@ -632,38 +678,15 @@ class RecallPipeline:
                 already_sorted=from_fusion,
             )
 
-            # Router alignment boost: gently boost candidates from router-aligned paths
-            # Only when router has high confidence and specific paths
-            if (
-                router_output.confidence >= 0.7
-                and router_output.allowed_yaml_paths
-                and router_output.intent != "global"
-            ):
-                _aligned_paths = set(router_output.allowed_yaml_paths)
-                # Also include expanded variants
-                _aligned_paths.update(self._expand_yaml_paths_for_filter(
-                    router_output.allowed_yaml_paths
-                ))
-                _boost_count = 0
-                for c in candidates:
-                    c_path = c.get("yaml_path", "")
-                    is_aligned = c_path in _aligned_paths or any(
-                        c_path.endswith(p.split("/")[-1]) for p in _aligned_paths if "/" in p
-                    )
-                    if is_aligned:
-                        # Apply 1.20x boost to aligned candidates
-                        for score_key in ("rrf_score", "linear_score", "distance"):
-                            if c.get(score_key) is not None:
-                                c[score_key] = c[score_key] * 1.20
-                                break
-                        _boost_count += 1
-                if _boost_count > 0:
-                    logger.debug(
-                        "Router alignment boost (%.2f): %d/%d candidates boosted",
-                        router_output.confidence,
-                        _boost_count,
-                        len(candidates),
-                    )
+            # Soft Boosting: graduated score adjustment based on router alignment.
+            # Instead of hard filtering, apply 3-tier multipliers:
+            #   Tier 1 (aligned): candidate yaml_path in router's allowed_yaml_paths → boost
+            #   Tier 2 (same market): same market as router, but different table → neutral
+            #   Tier 3 (cross market): different market entirely → penalty
+            # This preserves recall for long-tail queries where the router may be wrong.
+            candidates = self._apply_soft_boosting(
+                candidates, router_output, norm_info
+            )
 
             # Step 5: Sort by retrieval score (no LLM reranking)
             logger.info("Step 5: Sorting by retrieval score (agent handles reranking)...")
@@ -1215,12 +1238,24 @@ class RecallPipeline:
             )
         return pruned_hits
 
-    def _build_retrieval_query(
+    def _build_retrieval_queries(
         self,
         original_query: str,
         norm_info: Dict[str, Any],
-    ) -> str:
-        """根据 query_rewrite 配置构建用于 embedding 的检索查询。"""
+    ) -> Tuple[str, str]:
+        """构建解耦的 BM25 和 Vector 检索查询。
+
+        BM25 和 Dense Vector 对文本的偏好相反：
+        - BM25：喜欢干净的关键词集合，去掉停用词和废话。
+        - Vector (BGE)：喜欢连贯的自然语言描述，厌恶硬接的数学符号（如 >10）。
+
+        因此为两路检索分别生成最优查询：
+        - bm25_query: normalized_query + keywords + hypothetical_fields（纯关键词堆叠）
+        - vector_query: [市场域前缀] + normalized_query + 字段名（连贯语义，无算术符号）
+
+        Returns:
+            (bm25_query, vector_query)
+        """
         normalized_query = str(norm_info.get("normalized_query") or "").strip()
         if not normalized_query:
             normalized_query = original_query
@@ -1228,78 +1263,129 @@ class RecallPipeline:
         cfg = self._rewrite_cfg
         mode = cfg.retrieval_query_mode
         if mode == "original":
-            return original_query
+            return original_query, original_query
         if mode != "hybrid":
-            return normalized_query
+            return normalized_query, normalized_query
 
-        parts: List[str] = []
-        seen = set()
+        max_length = max(1, int(getattr(cfg, "retrieval_query_max_length", 256)))
 
-        def _append(part: Any) -> bool:
-            token = str(part or "").strip()
-            if not token or token in seen:
-                return False
-            seen.add(token)
-            parts.append(token)
-            return True
-
-        _append(normalized_query)
-
+        # --- Shared: extract keywords ---
         max_keywords = max(1, int(getattr(cfg, "retrieval_query_max_keywords", 4)))
         raw_keywords = norm_info.get("keywords", [])
         if isinstance(raw_keywords, str):
             raw_keywords = [raw_keywords]
-        keyword_count = 0
+        keywords: List[str] = []
         if isinstance(raw_keywords, (list, tuple)):
             for item in raw_keywords:
-                if keyword_count >= max_keywords:
+                if len(keywords) >= max_keywords:
                     break
                 keyword = str(item or "").strip()
                 if not keyword:
                     continue
                 if keyword in normalized_query:
                     continue
-                if _append(keyword):
-                    keyword_count += 1
+                keywords.append(keyword)
+
+        # --- Shared: extract numerical filter field names ---
+        max_num_filters = max(
+            1,
+            int(getattr(cfg, "retrieval_query_max_numerical_filters", 2)),
+        )
+        numerical_filters = norm_info.get("numerical_filters", [])
+        filter_field_names: List[str] = []
+        if isinstance(numerical_filters, list):
+            for item in numerical_filters:
+                if len(filter_field_names) >= max_num_filters:
+                    break
+                if not isinstance(item, dict):
+                    continue
+                field_name = str(item.get("field") or "").strip()
+                if field_name and field_name not in filter_field_names:
+                    filter_field_names.append(field_name)
+
+        # --- Shared: hypothetical_fields from LLM expansion ---
+        hy_fields_raw = norm_info.get("hypothetical_fields", [])
+        if isinstance(hy_fields_raw, str):
+            hy_fields_raw = [hy_fields_raw]
+        hy_fields: List[str] = []
+        if isinstance(hy_fields_raw, (list, tuple)):
+            for item in hy_fields_raw:
+                f = str(item or "").strip()
+                if f and f not in hy_fields:
+                    hy_fields.append(f)
+
+        # ===== Build BM25 Query (keyword stacking) =====
+        # BM25 benefits from clean keyword tokens: normalized_query + keywords +
+        # hypothetical_fields + filter field names. No operator symbols.
+        bm25_parts: List[str] = []
+        bm25_seen: set = set()
+
+        def _bm25_append(part: Any) -> bool:
+            token = str(part or "").strip()
+            if not token or token in bm25_seen:
+                return False
+            bm25_seen.add(token)
+            bm25_parts.append(token)
+            return True
+
+        _bm25_append(normalized_query)
+        for kw in keywords:
+            _bm25_append(kw)
+        for hf in hy_fields:
+            _bm25_append(hf)
+        if bool(getattr(cfg, "retrieval_query_include_numerical_filters", True)):
+            for fn in filter_field_names:
+                _bm25_append(fn)
+        if bool(getattr(cfg, "retrieval_query_include_time_range", True)):
+            _bm25_append(norm_info.get("time_range"))
+
+        bm25_query = self._truncate_query_parts(bm25_parts, max_length) or normalized_query
+
+        # ===== Build Vector Query (coherent natural language) =====
+        # Vector (BGE) benefits from fluent text. Add domain soft-prompting prefix
+        # and field names (without operator/value) to boost attention on relevant fields.
+        vector_parts: List[str] = []
+        vector_seen: set = set()
+
+        def _vector_append(part: Any) -> bool:
+            token = str(part or "").strip()
+            if not token or token in vector_seen:
+                return False
+            vector_seen.add(token)
+            vector_parts.append(token)
+            return True
+
+        # Domain soft-prompting: prepend market tag as BGE is sensitive to domain prefixes
+        market = str(norm_info.get("market") or "").strip()
+        if market:
+            _vector_append(f"[{market}]")
+
+        _vector_append(normalized_query)
+
+        for kw in keywords:
+            _vector_append(kw)
+
+        # Only append field names (no operator symbols like >10 that pollute semantic space)
+        if bool(getattr(cfg, "retrieval_query_include_numerical_filters", True)):
+            for fn in filter_field_names:
+                _vector_append(fn)
 
         if bool(getattr(cfg, "retrieval_query_include_time_range", True)):
-            _append(norm_info.get("time_range"))
-
-        if bool(getattr(cfg, "retrieval_query_include_numerical_filters", True)):
-            max_num_filters = max(
-                1,
-                int(
-                getattr(cfg, "retrieval_query_max_numerical_filters", 2)
-                ),
-            )
-            numerical_filters = norm_info.get("numerical_filters", [])
-            if isinstance(numerical_filters, list):
-                appended_filters = 0
-                for item in numerical_filters:
-                    if appended_filters >= max_num_filters:
-                        break
-                    if not isinstance(item, dict):
-                        continue
-                    field = str(item.get("field") or "").strip()
-                    op = str(item.get("operator") or "").strip()
-                    value = item.get("value")
-                    if not field or not op or value is None:
-                        continue
-                    unit = str(item.get("unit") or "").strip()
-                    value_text = str(value).strip()
-                    if not value_text:
-                        continue
-                    if _append(f"{field}{op}{value_text}{unit}"):
-                        appended_filters += 1
+            _vector_append(norm_info.get("time_range"))
 
         if bool(getattr(cfg, "retrieval_query_append_original", False)):
-            _append(original_query)
+            _vector_append(original_query)
 
+        vector_query = self._truncate_query_parts(vector_parts, max_length) or normalized_query
+
+        return bm25_query, vector_query
+
+    @staticmethod
+    def _truncate_query_parts(parts: List[str], max_length: int) -> str:
+        """Join parts with space, truncating to max_length at part boundaries."""
         if not parts:
-            return normalized_query
-
+            return ""
         query_text = " ".join(parts)
-        max_length = max(1, int(getattr(cfg, "retrieval_query_max_length", 256)))
         if len(query_text) <= max_length:
             return query_text
 
@@ -1410,6 +1496,211 @@ class RecallPipeline:
             f"{len(candidates)} -> {max_candidates}"
         )
         return truncated
+
+    def _apply_soft_boosting(
+        self,
+        candidates: List[Dict[str, Any]],
+        router_output: RouterOutput,
+        norm_info: Dict[str, Any],
+    ) -> List[Dict[str, Any]]:
+        """Apply graduated score adjustments based on router alignment.
+
+        3-tier multiplier system (Soft Boosting):
+          Tier 1 (aligned):      yaml_path ∈ router allowed_yaml_paths → aligned_boost (default 1.30x)
+          Tier 2 (same market):  same market, different table            → same_market_factor (default 1.0x)
+          Tier 3 (cross market): different market entirely               → cross_market_penalty (default 0.5x)
+
+        For multi-intent queries (is_multi_intent=True), cross-market penalty is
+        disabled since multiple markets are expected (e.g., "A股和美股对比").
+
+        This replaces hard filtering with preference signals, ensuring that even if the
+        router misroutes, semantically correct candidates can still surface via their
+        raw retrieval score.
+        """
+        if not candidates:
+            return candidates
+
+        # Check activation conditions
+        router_cfg = self._router_cfg
+        min_confidence = float(getattr(router_cfg, "boost_min_confidence", 0.4))
+        if router_output.confidence < min_confidence:
+            return candidates
+        if router_output.intent == "global" and not router_output.allowed_yaml_paths:
+            return candidates
+
+        aligned_boost = float(getattr(router_cfg, "aligned_boost", 1.30))
+        same_market_factor = float(getattr(router_cfg, "same_market_factor", 1.0))
+        cross_market_penalty = float(getattr(router_cfg, "cross_market_penalty", 0.5))
+
+        # Interpolate factors toward 1.0 as confidence drops toward min_confidence.
+        # At confidence == 1.0: full factor. At confidence == min_confidence: factor → 1.0.
+        conf_range = 1.0 - min_confidence
+        if conf_range > 0:
+            t = (router_output.confidence - min_confidence) / conf_range
+        else:
+            t = 1.0
+        effective_boost = 1.0 + (aligned_boost - 1.0) * t
+        effective_same = 1.0 + (same_market_factor - 1.0) * t
+        effective_penalty = 1.0 + (cross_market_penalty - 1.0) * t
+
+        # Build aligned path set (with expanded variants)
+        _aligned_paths: set = set()
+        if router_output.allowed_yaml_paths:
+            _aligned_paths.update(router_output.allowed_yaml_paths)
+            _aligned_paths.update(
+                self._expand_yaml_paths_for_filter(router_output.allowed_yaml_paths)
+            )
+
+        # Determine router market(s) for cross-market penalty.
+        # For multi-intent queries, collect ALL expected markets to avoid
+        # penalizing the "other" market in a comparison query.
+        router_markets: set = set()
+        if router_output.is_multi_intent and router_output.markets:
+            for m in router_output.markets:
+                nm = normalize_market_tag(m)
+                if nm:
+                    router_markets.add(nm)
+        else:
+            single_market = normalize_market_tag(
+                norm_info.get("market") or router_output.market
+            )
+            if single_market:
+                router_markets.add(single_market)
+
+        counts = {"aligned": 0, "same_market": 0, "cross_market": 0}
+        for c in candidates:
+            c_path = c.get("yaml_path", "")
+            is_aligned = (
+                bool(_aligned_paths)
+                and (
+                    c_path in _aligned_paths
+                    or any(
+                        c_path.endswith(p.split("/")[-1])
+                        for p in _aligned_paths
+                        if "/" in p
+                    )
+                )
+            )
+
+            if is_aligned:
+                factor = effective_boost
+                counts["aligned"] += 1
+            elif not router_markets:
+                # No market info → no penalty
+                continue
+            else:
+                c_market = normalize_market_tag(c.get("market"))
+                if not c_market or c_market in router_markets:
+                    factor = effective_same
+                    counts["same_market"] += 1
+                else:
+                    factor = effective_penalty
+                    counts["cross_market"] += 1
+
+            if abs(factor - 1.0) < 1e-9:
+                continue
+            for score_key in ("rrf_score", "linear_score", "distance"):
+                if c.get(score_key) is not None:
+                    c[score_key] = c[score_key] * factor
+                    break
+
+        if any(v > 0 for v in counts.values()):
+            logger.info(
+                "Soft boosting (confidence=%.2f, t=%.2f, multi_intent=%s): "
+                "aligned=%d (×%.2f), same_market=%d (×%.2f), cross_market=%d (×%.2f)",
+                router_output.confidence,
+                t,
+                router_output.is_multi_intent,
+                counts["aligned"],
+                effective_boost,
+                counts["same_market"],
+                effective_same,
+                counts["cross_market"],
+                effective_penalty,
+            )
+
+        return candidates
+
+    async def _federated_multi_intent_recall(
+        self,
+        router_output: RouterOutput,
+        norm_info: Dict[str, Any],
+        bm25_query: str,
+        retrieval_top_k: int,
+    ) -> Optional[Dict[str, List[Dict[str, Any]]]]:
+        """Federated search for multi-intent queries: run parallel per-market retrieval.
+
+        When a query involves multiple markets (e.g., "A股和美股科技股涨幅对比"),
+        instead of mixing all markets into a single retrieval pool (where one market's
+        longer descriptions can crowd out the other), we run independent BM25 searches
+        per market and merge the results with guaranteed minimum representation.
+
+        Returns:
+            Dict mapping source label to hit list, or None if federated search is
+            not applicable (single intent, disabled, etc.).
+        """
+        router_cfg = self._router_cfg
+        if not bool(getattr(router_cfg, "enable_federated_search", True)):
+            return None
+        if not router_output.is_multi_intent:
+            return None
+
+        # Deduplicate markets (preserve order) to avoid redundant parallel searches
+        seen_markets: set = set()
+        markets: List[str] = []
+        for m in (router_output.markets or ()):
+            nm = normalize_market_tag(m) or m
+            if nm and nm not in seen_markets:
+                seen_markets.add(nm)
+                markets.append(nm)
+        if len(markets) < 2:
+            return None
+
+        if self.bm25_retriever is None:
+            return None
+
+        min_per_leg = int(getattr(router_cfg, "federated_min_per_leg", 3))
+        per_leg_top_k = max(min_per_leg, retrieval_top_k // len(markets))
+
+        logger.info(
+            "Federated search: %d markets %s, per_leg_top_k=%d",
+            len(markets),
+            markets,
+            per_leg_top_k,
+        )
+
+        loop = asyncio.get_running_loop()
+
+        async def _search_market_leg(market: str) -> List[Dict[str, Any]]:
+            market_filter = market_filter_values(market) or {market}
+
+            def _run():
+                return self._bm25_search(
+                    bm25_query,
+                    per_leg_top_k,
+                    market=market_filter,
+                )
+
+            hits = await loop.run_in_executor(None, _run)
+            for hit in hits:
+                hit["_federated_market"] = market
+            return hits
+
+        leg_results = await asyncio.gather(
+            *(_search_market_leg(m) for m in markets)
+        )
+
+        result: Dict[str, List[Dict[str, Any]]] = {}
+        for market, hits in zip(markets, leg_results):
+            label = f"federated_{market}"
+            result[label] = hits
+            logger.info(
+                "  Federated leg %s: %d candidates",
+                market,
+                len(hits),
+            )
+
+        return result
 
     async def _two_stage_retrieval(
         self,

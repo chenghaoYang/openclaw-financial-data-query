@@ -106,6 +106,24 @@ class RouterConfig:
     enable_multi_intent: bool = _env_bool("ROUTER_ENABLE_MULTI_INTENT", True)
     max_intents: int = _env_int("ROUTER_MAX_INTENTS", 3)
 
+    # --- Soft Boosting: graduated score adjustment based on router alignment ---
+    # Applied post-fusion to re-rank candidates without hard filtering.
+    # aligned_boost: multiplier for candidates whose yaml_path matches router's allowed_yaml_paths
+    aligned_boost: float = _env_float("ROUTER_ALIGNED_BOOST", 1.30)
+    # same_market_factor: multiplier for candidates in the same market but not in allowed_yaml_paths
+    same_market_factor: float = _env_float("ROUTER_SAME_MARKET_FACTOR", 1.0)
+    # cross_market_penalty: multiplier for candidates in a different market entirely
+    cross_market_penalty: float = _env_float("ROUTER_CROSS_MARKET_PENALTY", 0.5)
+    # Minimum router confidence to activate soft boosting (below this, no boost/penalty applied)
+    boost_min_confidence: float = _env_float("ROUTER_BOOST_MIN_CONFIDENCE", 0.4)
+
+    # --- Federated Search for multi-intent queries ---
+    # When True, multi-intent queries (e.g., "A股和美股科技股对比") run parallel
+    # per-market retrieval instead of a single mixed pool.
+    enable_federated_search: bool = _env_bool("ROUTER_ENABLE_FEDERATED_SEARCH", True)
+    # Minimum results guaranteed per market leg in federated search
+    federated_min_per_leg: int = _env_int("ROUTER_FEDERATED_MIN_PER_LEG", 3)
+
     def __post_init__(self):
         if not (0.0 <= self.confidence_threshold <= 1.0):
             raise ValueError(
@@ -115,6 +133,28 @@ class RouterConfig:
         if self.max_intents <= 0:
             raise ValueError(
                 f"RouterConfig.max_intents must be > 0, got {self.max_intents}"
+            )
+        if self.aligned_boost < 0:
+            raise ValueError(
+                f"RouterConfig.aligned_boost must be >= 0, got {self.aligned_boost}"
+            )
+        if self.same_market_factor < 0:
+            raise ValueError(
+                f"RouterConfig.same_market_factor must be >= 0, got {self.same_market_factor}"
+            )
+        if self.cross_market_penalty < 0:
+            raise ValueError(
+                f"RouterConfig.cross_market_penalty must be >= 0, got {self.cross_market_penalty}"
+            )
+        if not (0.0 <= self.boost_min_confidence <= 1.0):
+            raise ValueError(
+                f"RouterConfig.boost_min_confidence must be in [0.0, 1.0], "
+                f"got {self.boost_min_confidence}"
+            )
+        if self.federated_min_per_leg <= 0:
+            raise ValueError(
+                f"RouterConfig.federated_min_per_leg must be > 0, "
+                f"got {self.federated_min_per_leg}"
             )
 
 
